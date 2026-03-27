@@ -21,10 +21,73 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteUrl = "https://aayushgiri.dev";
+const title = "Aayush Giri // Senior DevRel Engineer";
+const description =
+  "Senior Developer Relations Engineer at Nethermind. 15+ conference talks, 3 ETHGlobal wins. Specializing in ZK proofs, rollups, Starknet, Aztec, and Ethereum infrastructure.";
+
 export const metadata: Metadata = {
-  title: "Aayush Giri // Senior DevRel Engineer",
-  description:
-    "Senior Developer Relations Engineer at Nethermind. 15+ conference talks, 3 ETHGlobal wins, specializing in ZK proofs, rollups, and Ethereum infrastructure.",
+  title,
+  description,
+  metadataBase: new URL(siteUrl),
+  keywords: [
+    "Aayush Giri",
+    "Developer Relations",
+    "DevRel",
+    "Web3",
+    "Ethereum",
+    "Starknet",
+    "Aztec",
+    "Zero Knowledge",
+    "ZK Proofs",
+    "Blockchain",
+    "Nethermind",
+    "Smart Contracts",
+    "Solidity",
+    "Rust",
+    "SDK",
+    "Developer Tooling",
+    "ETHGlobal",
+  ],
+  authors: [{ name: "Aayush Giri", url: siteUrl }],
+  creator: "Aayush Giri",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    title,
+    description,
+    siteName: "Aayush Giri",
+    images: [
+      {
+        url: "/profile.png",
+        width: 1024,
+        height: 1024,
+        alt: "Aayush Giri - Senior DevRel Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    creator: "@AayushStack",
+    images: ["/profile.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function RootLayout({
