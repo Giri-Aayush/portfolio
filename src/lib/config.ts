@@ -5,12 +5,12 @@
 export const config = {
   // Personal
   name: "Aayush Giri",
-  role: "Developer Relations Engineer",
+  role: "Senior Developer Relations Engineer",
   github: "Giri-Aayush",
 
   // Manually tracked stats
   stats: {
-    talksGiven: 12,
+    talksGiven: 15,
     articlesPublished: 35,
     // Offset for commits/PRs made outside GitHub (GitLab, Bitbucket, etc.)
     extraCommits: 0,
@@ -20,24 +20,80 @@ export const config = {
   // Experience
   experience: [
     {
-      period: "2023 -PRES",
-      company: "COGNITION_AI",
+      period: "2024 -PRES",
+      company: "NETHERMIND",
+      role: "Senior Developer Relations Engineer",
       description:
-        "Lead Developer Relations. Architecting the future of autonomous engineering loops and LLM-integrated devtools.",
+        "Architected DevRel program from scratch across 5+ Ethereum-aligned products. Drove 60% developer engagement growth, owned Starknet All Core Devs calls (600+ live viewers), co-authored SNIP-27, and spearheaded the Aztec ecosystem pilot.",
     },
     {
-      period: "2021 -2023",
-      company: "AWS // WEB3_ORG",
+      period: "2023 -2024",
+      company: "SPHERON_NETWORK",
+      role: "Developer Relations Engineer",
       description:
-        "Senior Cloud Architect. Built managed blockchain services for enterprise scaling on Ethereum and Polygon.",
+        "Owned full developer onboarding funnel for decentralized compute infrastructure. Reduced support tickets 40%, drove 110% portal traffic growth and 20% NPM SDK download lift.",
     },
     {
-      period: "2019 -2021",
-      company: "AMAZON_CORP",
+      period: "2023",
+      company: "JIO_PLATFORMS",
+      role: "Software Development Engineer Intern",
       description:
-        "Software Development Engineer II. Optimized high-throughput payment gateways using serverless primitives.",
+        "Built modular React API framework for JioMeet, resolved 60+ production bugs including legacy WebRTC issues, and shipped 20+ accessibility features.",
+    },
+    {
+      period: "2023",
+      company: "CLAMP",
+      role: "Founding Blockchain Developer",
+      description:
+        "Built the entire blockchain backend for an Ethereum-based crypto index platform. ERC-4337 account abstraction, UniswapV3, Chainlink feeds across 7+ EVM chains.",
+    },
+    {
+      period: "2022",
+      company: "RIZE_LABS",
+      role: "Blockchain Developer Intern",
+      description:
+        "Co-developed biometrically-secured ERC-4337 smart wallets. Built React frontend driving 20% engagement boost and docs driving 30% developer onboarding increase.",
     },
   ],
+
+  // Awards
+  awards: [
+    {
+      event: "ETHGlobal Taipei 2025",
+      result: "WINNER",
+      track: "Celo Tooling Track",
+      description: "Built MCP framework for Celo ecosystem",
+    },
+    {
+      event: "ETHGlobal Prague 2025",
+      result: "RUNNER-UP",
+      track: "1inch Track",
+      description: "Developed VectorPlus DeFi optimization solution",
+    },
+    {
+      event: "ETHGlobal Tokyo 2023",
+      result: "WINNER",
+      track: "Best Innovation Award",
+      description: "Secured prizes from Bunzz, Polygon, and Scroll",
+    },
+  ],
+
+  // Speaking & Community
+  speaking: {
+    talks: 15,
+    hackathonsJudged: 12,
+    developersOnboarded: 1000,
+    conferences: [
+      "ETHBelgrade",
+      "ETHTaipei",
+      "ETHDam",
+      "ETHDenver",
+      "StarkSpace Bangkok",
+      "Starknet Roadshows",
+      "Web3Reinvent India Tour",
+    ],
+  },
+
   // Featured OSS projects
   // Ordered by creation date, latest first
   ossProjects: [

@@ -16,15 +16,20 @@ export function Chronicle() {
         {config.experience.map((exp) => (
           <div
             key={exp.company}
-            className="group grid grid-cols-12 gap-4 items-center"
+            className="group grid grid-cols-12 gap-4 items-start"
           >
-            <div className="col-span-12 md:col-span-2 font-label text-xs text-on-surface-variant">
+            <div className="col-span-12 md:col-span-2 font-label text-xs text-on-surface-variant pt-1">
               {exp.period}
             </div>
-            <div className="col-span-12 md:col-span-4 font-headline text-2xl font-bold group-hover:text-primary transition-colors">
-              {exp.company}
+            <div className="col-span-12 md:col-span-3">
+              <div className="font-headline text-2xl font-bold group-hover:text-primary transition-colors">
+                {exp.company}
+              </div>
+              <div className="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
+                {exp.role}
+              </div>
             </div>
-            <div className="col-span-12 md:col-span-4 font-body text-on-surface-variant">
+            <div className="col-span-12 md:col-span-5 font-body text-on-surface-variant">
               {exp.description}
             </div>
             <div className="col-span-12 md:col-span-2 text-right hidden md:block">

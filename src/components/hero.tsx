@@ -1,10 +1,10 @@
 import Image from "next/image";
 
 const tags = [
-  { label: "EVM_OPTIMIZATION", color: "primary" },
+  { label: "ETHEREUM_INFRA", color: "primary" },
   { label: "ZERO_KNOWLEDGE", color: "secondary" },
-  { label: "RUST_LANG", color: "primary" },
-  { label: "MODULAR_DA", color: "secondary" },
+  { label: "SDK_TOOLING", color: "primary" },
+  { label: "AI_AGENTS", color: "secondary" },
 ] as const;
 
 export function Hero() {
@@ -37,10 +37,11 @@ export function Hero() {
           </h1>
 
           <p className="font-body text-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed">
-            Developer Relations Engineer specializing in Ethereum infrastructure
-            and decentralized systems. Bridging the gap between complex
-            cryptography and high-performance engineering through technical
-            advocacy and modular architecture.
+            Senior Developer Relations Engineer with 4+ years across
+            Ethereum-aligned infrastructure protocols. 15+ conference talks,
+            12+ hackathons judged, 1,000+ developers onboarded. Building
+            DevRel programs from scratch and shipping SDK tooling with
+            measurable activation outcomes.
           </p>
 
           <div className="flex flex-wrap gap-3">
