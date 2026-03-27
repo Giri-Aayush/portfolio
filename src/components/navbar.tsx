@@ -1,9 +1,11 @@
 import Link from "next/link";
 
 const navLinks = [
-  { label: "MANIFESTO", href: "#hero", active: true },
-  { label: "ARCHIVE", href: "#chronicle" },
-  { label: "CONTACT", href: "#footer" },
+  { label: "ABOUT", href: "#hero" },
+  { label: "EXPERIENCE", href: "#chronicle" },
+  { label: "VIDEOS", href: "#transmission" },
+  { label: "BLOGS", href: "#logs" },
+  { label: "OSS", href: "#terminal" },
 ];
 
 export function Navbar() {
@@ -18,11 +20,7 @@ export function Navbar() {
           <Link
             key={link.label}
             href={link.href}
-            className={
-              link.active
-                ? "text-primary border-b border-primary pb-1"
-                : "text-on-surface-variant hover:text-on-surface transition-colors"
-            }
+            className="text-on-surface-variant hover:text-primary transition-colors"
           >
             {link.label}
           </Link>

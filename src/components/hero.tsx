@@ -22,7 +22,7 @@ export function Hero() {
           />
         </div>
 
-        <div className="col-span-12 md:col-span-7 flex flex-col justify-end pt-8 md:pt-0">
+        <div className="col-span-12 md:col-span-7 flex flex-col justify-center pt-8 md:pt-0">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 bg-secondary shadow-[0_0_10px_#d2f000]" />
             <span className="font-label text-xs text-on-surface-variant tracking-[0.2em]">

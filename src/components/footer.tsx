@@ -1,11 +1,5 @@
 import Link from "next/link";
 
-const footerLinks = [
-  { label: "SOURCE_CODE", href: "#" },
-  { label: "NODES", href: "#" },
-  { label: "STATUS", href: "#" },
-];
-
 export function Footer() {
   return (
     <footer
@@ -14,18 +8,39 @@ export function Footer() {
     >
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
         <div className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">
-          ©2024 PROTOCOL_ARCHITECT // BUILT_ON_ETHEREUM
+          &copy;{new Date().getFullYear()} AAYUSH GIRI
         </div>
         <div className="flex gap-8 font-label text-[10px] tracking-widest uppercase">
-          {footerLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="text-outline-variant hover:text-on-surface transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href="https://github.com/Giri-Aayush"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-outline-variant hover:text-on-surface transition-colors"
+          >
+            GITHUB
+          </Link>
+          <Link
+            href="https://x.com/AayushStack"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-outline-variant hover:text-on-surface transition-colors"
+          >
+            X
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/aayush-giri/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-outline-variant hover:text-on-surface transition-colors"
+          >
+            LINKEDIN
+          </Link>
+          <Link
+            href="mailto:aayushgiri1234@gmail.com"
+            className="text-outline-variant hover:text-on-surface transition-colors"
+          >
+            EMAIL
+          </Link>
         </div>
       </div>
     </footer>

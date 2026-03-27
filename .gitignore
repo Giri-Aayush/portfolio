@@ -16,6 +16,9 @@ build/
 .env.test.local
 .env.production.local
 
+# info (design docs, stitch assets)
+info/
+
 # misc
 .DS_Store
 *.tsbuildinfo

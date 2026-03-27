@@ -26,7 +26,7 @@ const articles = [
 
 export function Logs() {
   return (
-    <section className="px-8 mb-28">
+    <section id="logs" className="px-8 mb-28">
       <div className="editorial-grid">
         <div className="col-span-12 md:col-span-4">
           <h2 className="font-headline text-6xl font-bold tracking-tighter uppercase mb-4 sticky top-28">

@@ -1,23 +1,4 @@
-const experiences = [
-  {
-    period: "2023 — PRES",
-    company: "COGNITION_AI",
-    description:
-      "Lead Developer Relations. Architecting the future of autonomous engineering loops and LLM-integrated devtools.",
-  },
-  {
-    period: "2021 — 2023",
-    company: "AWS // WEB3_ORG",
-    description:
-      "Senior Cloud Architect. Built managed blockchain services for enterprise scaling on Ethereum and Polygon.",
-  },
-  {
-    period: "2019 — 2021",
-    company: "AMAZON_CORP",
-    description:
-      "Software Development Engineer II. Optimized high-throughput payment gateways using serverless primitives.",
-  },
-];
+import { config } from "@/lib/config";
 
 export function Chronicle() {
   return (
@@ -32,7 +13,7 @@ export function Chronicle() {
       </div>
 
       <div className="space-y-12">
-        {experiences.map((exp) => (
+        {config.experience.map((exp) => (
           <div
             key={exp.company}
             className="group grid grid-cols-12 gap-4 items-center"
