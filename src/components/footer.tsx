@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer
       id="footer"
-      className="w-full py-12 px-8 bg-surface border-t border-outline-variant/10"
+      className="w-full pt-12 pb-24 px-8 bg-surface border-t border-outline-variant/10"
     >
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
         <div className="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">

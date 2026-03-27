@@ -47,7 +47,7 @@ function VideoCard({ video }: { video: (typeof videos)[number] }) {
       href={video.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group cursor-pointer shrink-0 w-[380px]"
+      className="group cursor-pointer shrink-0 w-[300px] md:w-[380px]"
       draggable={false}
     >
       <div className="aspect-video bg-surface-container-low mb-4 relative overflow-hidden border border-transparent group-hover:border-primary/40 group-hover:shadow-[0_0_30px_rgba(129,236,255,0.12)] transition-all duration-500">
@@ -74,15 +74,22 @@ function VideoCard({ video }: { video: (typeof videos)[number] }) {
 
 export function Transmission() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
   const dragDistRef = useRef(0);
 
-  // Auto-scroll with requestAnimationFrame
-  const scrollSpeed = 0.5; // px per frame
+  // Detect mobile
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
+  // Auto-scroll on all devices
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -90,8 +97,7 @@ export function Transmission() {
     let animId: number;
     const step = () => {
       if (!isPaused && !isDragging) {
-        track.scrollLeft += scrollSpeed;
-        // Loop: when scrolled past halfway (the duplicated content), reset
+        track.scrollLeft += 0.5;
         const halfWidth = track.scrollWidth / 2;
         if (track.scrollLeft >= halfWidth) {
           track.scrollLeft -= halfWidth;
@@ -103,12 +109,13 @@ export function Transmission() {
     return () => cancelAnimationFrame(animId);
   }, [isPaused, isDragging]);
 
+  // Desktop drag handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     const track = trackRef.current;
     if (!track) return;
     setIsDragging(true);
-    setStartX(e.pageX - track.offsetLeft);
-    setScrollLeft(track.scrollLeft);
+    startXRef.current = e.pageX - track.offsetLeft;
+    scrollLeftRef.current = track.scrollLeft;
     dragDistRef.current = 0;
   }, []);
 
@@ -119,44 +126,15 @@ export function Transmission() {
       if (!track) return;
       e.preventDefault();
       const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 1.5;
+      const walk = (x - startXRef.current) * 1.5;
       dragDistRef.current = Math.abs(walk);
-      track.scrollLeft = scrollLeft - walk;
+      track.scrollLeft = scrollLeftRef.current - walk;
     },
-    [isDragging, startX, scrollLeft]
+    [isDragging]
   );
 
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const handleMouseUp = useCallback(() => setIsDragging(false), []);
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    const track = trackRef.current;
-    if (!track) return;
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - track.offsetLeft);
-    setScrollLeft(track.scrollLeft);
-    dragDistRef.current = 0;
-  }, []);
-
-  const handleTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      if (!isDragging) return;
-      const track = trackRef.current;
-      if (!track) return;
-      const x = e.touches[0].pageX - track.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      dragDistRef.current = Math.abs(walk);
-      track.scrollLeft = scrollLeft - walk;
-    },
-    [isDragging, startX, scrollLeft]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  // Prevent link clicks after dragging
   const handleClick = useCallback((e: React.MouseEvent) => {
     if (dragDistRef.current > 5) {
       e.preventDefault();
@@ -182,21 +160,18 @@ export function Transmission() {
         }}
       >
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-linear-to-r from-surface to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-linear-to-l from-surface to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-linear-to-r from-surface to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-linear-to-l from-surface to-transparent z-10 pointer-events-none" />
 
         <div
           ref={trackRef}
-          className="flex gap-8 overflow-x-auto px-8 select-none scrollbar-hide"
-          style={{ cursor: isDragging ? "grabbing" : "grab" }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onClickCapture={handleClick}
+          className="flex gap-6 md:gap-8 overflow-x-auto px-8 select-none scrollbar-hide"
+          style={!isMobile ? { cursor: isDragging ? "grabbing" : "grab" } : undefined}
+          onMouseDown={!isMobile ? handleMouseDown : undefined}
+          onMouseMove={!isMobile ? handleMouseMove : undefined}
+          onMouseUp={!isMobile ? handleMouseUp : undefined}
+          onMouseLeave={!isMobile ? handleMouseUp : undefined}
+          onClickCapture={!isMobile ? handleClick : undefined}
         >
           {loopedVideos.map((video, i) => (
             <VideoCard key={`${video.href}-${i}`} video={video} />
