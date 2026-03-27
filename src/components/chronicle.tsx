@@ -7,9 +7,14 @@ export function Chronicle() {
         <h2 className="font-headline text-3xl font-bold tracking-tighter uppercase">
           CHRONICLE // EXPERIENCE
         </h2>
-        <span className="font-label text-[10px] text-on-surface-variant tracking-widest cursor-pointer hover:text-primary transition-colors">
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-label text-[10px] text-on-surface-variant tracking-widest cursor-pointer hover:text-primary transition-colors"
+        >
           VIEW_FULL_CV [→]
-        </span>
+        </a>
       </div>
 
       <div className="space-y-10">
@@ -59,9 +64,14 @@ export function Chronicle() {
               </div>
             </div>
             <div className="col-span-12 md:col-span-1 text-right hidden md:block">
-              <span className="text-primary group-hover:translate-x-2 transition-transform inline-block">
+              <a
+                href={exp.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary group-hover:translate-x-2 transition-transform inline-block"
+              >
                 →
-              </span>
+              </a>
             </div>
           </div>
         ))}

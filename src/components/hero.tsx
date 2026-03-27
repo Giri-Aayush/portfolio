@@ -11,18 +11,20 @@ export function Hero() {
   return (
     <section id="hero" className="px-8 mb-28">
       <div className="editorial-grid">
-        <div className="col-span-12 md:col-span-5 aspect-[4/5] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+        {/* Image - hidden on mobile, shown on desktop left with blended edges */}
+        <div className="hidden md:block col-span-5 aspect-[4/5] relative overflow-hidden">
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDwunGl3kJPqxtiTUsmCB5hD9_964izuFRbb2X08Y8Fd0EtGfgbN2amOdzJoMnhklhNqHPkDeTYuEeuDZVCtMkcCYdd8etAW9fBbknuFsmTuGn9rnW8LRwsBWERiguupRYF_QDDyz3euURCj4AK1yqo_gRLHF0RZWzGU54vNod6ifWSu6KU3-6-xdj1DQxMMbFw5DHUWJibUa38fj7-EX4uS9vmYQMHeXmtPk96X0wS089lpjWPpJL-yFBL77XbYp7wNaRDnZ7EsSw"
+            src="/profile.png"
             alt="Profile"
             width={800}
             height={1000}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
             priority
           />
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_60px_30px_#0e0e0e]" />
         </div>
 
-        <div className="col-span-12 md:col-span-7 flex flex-col justify-center pt-8 md:pt-0">
+        <div className="col-span-12 md:col-span-7 flex flex-col justify-center">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 bg-secondary shadow-[0_0_10px_#d2f000]" />
             <span className="font-label text-xs text-on-surface-variant tracking-[0.2em]">
@@ -31,20 +33,22 @@ export function Hero() {
           </div>
 
           <h1 className="font-headline text-5xl md:text-8xl font-bold tracking-tighter leading-none mb-8">
-            SCALING <span className="text-primary italic">PROTOCOLS</span>
+            BUILDING <span className="text-primary italic">DEVEX</span>
             <br />
             FOR THE OPEN WEB.
           </h1>
 
           <p className="font-body text-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed">
-            Senior Developer Relations Engineer with 4+ years across
-            Ethereum-aligned infrastructure protocols. 15+ conference talks,
-            12+ hackathons judged, 1,000+ developers onboarded. Building
-            DevRel programs from scratch and shipping SDK tooling with
-            measurable activation outcomes.
+            Hi, I&apos;m Aayush Giri. I&apos;ve been building software for over
+            5 years across zero-knowledge cryptography, AI agent tooling,
+            developer tooling, blockchain infrastructure, and full-stack
+            development. I also specialize in high-impact developer relations
+            and technical education, with a deep focus on closing the gap
+            between complex protocols and the developers building on top of
+            them.
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-10">
             {tags.map((tag) => (
               <span
                 key={tag.label}
@@ -58,6 +62,27 @@ export function Hero() {
               </span>
             ))}
           </div>
+
+          <a
+            href="https://cal.com/aayush-giri/quicksync"
+            className="font-label text-[10px] tracking-[0.3em] uppercase bg-primary text-surface px-6 py-3 hover:bg-primary-dim transition-colors inline-block w-fit font-bold"
+          >
+            LET&apos;S_CONNECT [→]
+          </a>
+        </div>
+
+        {/* Mobile-only image - shown below content with blended edges */}
+        <div className="col-span-12 md:hidden relative max-w-xs mx-auto mt-8">
+          <div className="aspect-square overflow-hidden grayscale rounded-full">
+            <Image
+              src="/profile.png"
+              alt="Profile"
+              width={400}
+              height={400}
+              className="w-full h-full object-cover scale-110"
+            />
+          </div>
+          <div className="absolute inset-0 rounded-full shadow-[inset_0_0_40px_20px_#0e0e0e] pointer-events-none" />
         </div>
       </div>
     </section>

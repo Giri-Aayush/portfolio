@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const articles = [
   {
     date: "04.12.24",
@@ -54,12 +52,9 @@ export function Logs() {
               <p className="font-body text-on-surface-variant leading-relaxed mb-6">
                 {article.description}
               </p>
-              <Link
-                href="#"
-                className="font-label text-[10px] text-primary tracking-[0.3em] uppercase group-hover:translate-x-2 inline-block transition-transform"
-              >
-                READ_ENTRY [→]
-              </Link>
+              <span className="font-label text-[10px] text-outline-variant tracking-[0.3em] uppercase">
+                COMING_SOON
+              </span>
             </article>
           ))}
         </div>

@@ -19,10 +19,10 @@ export default function Home() {
         <Stats />
         <Chronicle />
         <Awards />
+        <Credentials />
         <Transmission />
         <Logs />
         <Terminal />
-        <Credentials />
       </main>
       <FloatingDock />
       <Footer />

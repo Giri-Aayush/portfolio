@@ -13,7 +13,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-[#0E0E0E]/80 backdrop-blur-xl border-b border-outline-variant/20 flex justify-between items-center px-8 py-4">
       <div className="font-headline font-black text-primary tracking-tighter text-xl">
-        ARCHITECT.V1
+        AAYUSH GIRI
       </div>
 
       <div className="hidden md:flex gap-8 items-center font-headline font-bold tracking-tighter uppercase text-sm">
@@ -28,12 +28,12 @@ export function Navbar() {
         ))}
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="w-2 h-2 bg-secondary rounded-full animate-pulse shadow-[0_0_8px_rgba(210,240,0,0.8)]" />
-        <span className="font-label text-[10px] text-secondary tracking-widest uppercase">
-          NODE_ACTIVE
-        </span>
-      </div>
+      <a
+        href="https://cal.com/aayush-giri/quicksync"
+        className="font-label text-[10px] tracking-widest uppercase border border-primary/30 px-4 py-2 text-primary hover:bg-primary/10 transition-colors"
+      >
+        BOOK_A_CALL
+      </a>
     </nav>
   );
 }

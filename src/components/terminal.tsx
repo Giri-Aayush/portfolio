@@ -2,7 +2,7 @@ import { config } from "@/lib/config";
 
 export function Terminal() {
   return (
-    <section id="terminal" className="px-8 mb-28">
+    <section id="terminal" className="px-8 mb-16">
       <div className="mb-12 flex items-center gap-4">
         <h2 className="font-headline text-3xl font-bold tracking-tighter uppercase">
           TERMINAL // OSS

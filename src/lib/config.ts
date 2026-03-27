@@ -22,6 +22,7 @@ export const config = {
     {
       period: "MAR 2024 -PRES",
       company: "NETHERMIND",
+      url: "https://www.nethermind.io/",
       roles: [
         { title: "Senior Developer Relations Engineer", period: "Apr 2025 - Present" },
         { title: "Developer Relations Engineer", period: "Jun 2024 - Apr 2025" },
@@ -31,6 +32,7 @@ export const config = {
     {
       period: "SEP 2023 -JAN 2024",
       company: "SPHERON_NETWORK",
+      url: "https://www.spheron.network/",
       roles: [
         { title: "Developer Relations Engineer", period: "Sep 2023 - Jan 2024" },
       ],
@@ -38,6 +40,7 @@ export const config = {
     {
       period: "MAY -JUL 2023",
       company: "JIO_PLATFORMS",
+      url: "https://www.jio.com/",
       roles: [
         { title: "Software Development Engineer Intern", period: "May 2023 - Jul 2023" },
       ],
@@ -45,6 +48,7 @@ export const config = {
     {
       period: "JAN -MAY 2023",
       company: "CLAMP",
+      url: "https://joinclamp.com/",
       roles: [
         { title: "Founding Blockchain Developer", period: "Jan 2023 - May 2023" },
       ],
@@ -52,6 +56,7 @@ export const config = {
     {
       period: "SEP -DEC 2022",
       company: "RIZE_LABS",
+      url: "https://spotlight.buidl.so/posts/bananahq",
       roles: [
         { title: "Blockchain Developer Intern", period: "Sep 2022 - Dec 2022" },
       ],
@@ -84,12 +89,16 @@ export const config = {
   speaking: {
     talks: 15,
     hackathonsJudged: 12,
-    developersOnboarded: 1000,
+    hackathonsOrganized: 3,
     conferences: [
       "ETHBelgrade",
       "ETHTaipei",
       "ETHDam",
       "ETHDenver",
+      "ETHPrague",
+      "ETHSingapore",
+      "Devcon",
+      "Devconnect",
       "StarkSpace Bangkok",
       "Starknet Roadshows",
       "Web3Reinvent India Tour",

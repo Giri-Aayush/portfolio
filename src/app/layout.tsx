@@ -22,9 +22,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ARCHITECT.V1 // DevRel Portfolio",
+  title: "Aayush Giri // Senior DevRel Engineer",
   description:
-    "Developer Relations Engineer specializing in Ethereum infrastructure and decentralized systems.",
+    "Senior Developer Relations Engineer at Nethermind. 15+ conference talks, 3 ETHGlobal wins, specializing in ZK proofs, rollups, and Ethereum infrastructure.",
 };
 
 export default function RootLayout({

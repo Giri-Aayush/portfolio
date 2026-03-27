@@ -4,7 +4,7 @@ export function Credentials() {
   const { speaking } = config;
 
   return (
-    <section id="credentials" className="px-8 mb-28">
+    <section id="credentials" className="px-8 mb-16">
       <div className="mb-12 flex items-center gap-4">
         <h2 className="font-headline text-3xl font-bold tracking-tighter uppercase">
           CREDENTIALS // COMMUNITY
@@ -33,10 +33,10 @@ export function Credentials() {
         </div>
         <div className="bg-surface-container-low p-6 border border-outline-variant/10">
           <span className="font-label text-[10px] tracking-widest text-primary uppercase block mb-2">
-            Developers Onboarded
+            Hackathons Organized
           </span>
           <span className="font-headline text-4xl font-bold">
-            {(speaking.developersOnboarded / 1000).toFixed(0)}K
+            {speaking.hackathonsOrganized}
             <span className="text-primary">+</span>
           </span>
         </div>
