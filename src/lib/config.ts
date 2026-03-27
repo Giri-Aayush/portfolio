@@ -20,39 +20,41 @@ export const config = {
   // Experience
   experience: [
     {
-      period: "2024 -PRES",
+      period: "MAR 2024 -PRES",
       company: "NETHERMIND",
-      role: "Senior Developer Relations Engineer",
-      description:
-        "Architected DevRel program from scratch across 5+ Ethereum-aligned products. Drove 60% developer engagement growth, owned Starknet All Core Devs calls (600+ live viewers), co-authored SNIP-27, and spearheaded the Aztec ecosystem pilot.",
+      roles: [
+        { title: "Senior Developer Relations Engineer", period: "Apr 2025 - Present" },
+        { title: "Developer Relations Engineer", period: "Jun 2024 - Apr 2025" },
+        { title: "Research Engineer", period: "Mar 2024 - Jun 2024" },
+      ],
     },
     {
-      period: "2023 -2024",
+      period: "SEP 2023 -JAN 2024",
       company: "SPHERON_NETWORK",
-      role: "Developer Relations Engineer",
-      description:
-        "Owned full developer onboarding funnel for decentralized compute infrastructure. Reduced support tickets 40%, drove 110% portal traffic growth and 20% NPM SDK download lift.",
+      roles: [
+        { title: "Developer Relations Engineer", period: "Sep 2023 - Jan 2024" },
+      ],
     },
     {
-      period: "2023",
+      period: "MAY -JUL 2023",
       company: "JIO_PLATFORMS",
-      role: "Software Development Engineer Intern",
-      description:
-        "Built modular React API framework for JioMeet, resolved 60+ production bugs including legacy WebRTC issues, and shipped 20+ accessibility features.",
+      roles: [
+        { title: "Software Development Engineer Intern", period: "May 2023 - Jul 2023" },
+      ],
     },
     {
-      period: "2023",
+      period: "JAN -MAY 2023",
       company: "CLAMP",
-      role: "Founding Blockchain Developer",
-      description:
-        "Built the entire blockchain backend for an Ethereum-based crypto index platform. ERC-4337 account abstraction, UniswapV3, Chainlink feeds across 7+ EVM chains.",
+      roles: [
+        { title: "Founding Blockchain Developer", period: "Jan 2023 - May 2023" },
+      ],
     },
     {
-      period: "2022",
+      period: "SEP -DEC 2022",
       company: "RIZE_LABS",
-      role: "Blockchain Developer Intern",
-      description:
-        "Co-developed biometrically-secured ERC-4337 smart wallets. Built React frontend driving 20% engagement boost and docs driving 30% developer onboarding increase.",
+      roles: [
+        { title: "Blockchain Developer Intern", period: "Sep 2022 - Dec 2022" },
+      ],
     },
   ],
 
