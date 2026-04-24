@@ -1086,28 +1086,28 @@ const blogsRaw: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "Three pieces it intentionally leaves to the app layer. That is the right call for a reference SDK — every product will want these solved a little differently. I built on top with an actual application in mind and ended up solving the same three each time.",
+        text: "Three pieces it intentionally leaves to the app layer. That is the right call for a reference SDK. Every product will want these solved a little differently. I built on top with an actual application in mind and ended up solving the same three each time.",
       },
       {
         type: "list",
         items: [
           "Dispute response is manual, by design. The client exposes challenge() and emits HomeChannelChallengedEvent; the app decides when and how to watch, reconstruct the latest co-signed state, and submit before the window closes. This lets each product pick its own reliability model.",
-          "Channel-state persistence is app-side. ClientAssetStore caches asset metadata, and channel state across browser refresh or process restart is wired up per app — which storage backend, what TTL, what recovery semantics. That is a choice, not an oversight.",
+          "Channel-state persistence is app-side. ClientAssetStore caches asset metadata, and channel state across browser refresh or process restart is wired up per app: which storage backend, what TTL, what recovery semantics. That is a choice, not an oversight.",
           "No framework bindings, and that is the right call for a framework-agnostic SDK. Transport initialization, hydration, and SSR are each project's problem to solve for its own stack.",
         ],
       },
       {
         type: "quote",
-        text: "Protocols ship. SDKs ship. What defines the next year is the opinionated layer above — the one that makes shipping an app on state channels feel like shipping on anything else.",
+        text: "Protocols ship. SDKs ship. What defines the next year is the opinionated layer above, the one that makes shipping an app on state channels feel like shipping on anything else.",
       },
       { type: "heading", text: "The Tooling Gap" },
       {
         type: "paragraph",
-        text: "Every protocol goes through the same phase after it ships. Ethereum had it until ethers and then viem matured. Rollups had it until Conduit, Caldera, and similar tooling showed up. State channels are in exactly that phase now. The primitives are there. The spec is there. The v1 SDK is there. What the next round of work is about is the opinionated layer above — the piece that lets a product team ship without also having to become a state-channel library author.",
+        text: "Every protocol goes through the same phase after it ships. Ethereum had it until ethers and then viem matured. Rollups had it until Conduit, Caldera, and similar tooling showed up. State channels are in exactly that phase now. The primitives are there. The spec is there. The v1 SDK is there. What the next round of work is about is the opinionated layer above: the piece that lets a product team ship without also having to become a state-channel library author.",
       },
       {
         type: "paragraph",
-        text: "I started NitroGuard against Nitrolite 0.5.x with a list of five things an app would need on top. When the v1 release landed in March, Yellow had solved two of those five at the SDK layer — state-transition validation and a typed client — and that is exactly the right layer for them. The three that remain are app-shaped: a dispute watcher plus ClearNode silence monitor that auto-submits the latest co-signed state when a challenge lands, channel-state persistence across browser refresh with pluggable storage adapters, and React and Next.js bindings that survive SSR. NitroGuard also adds a channel-lifecycle FSM above Nitrolite's state-advancement validation, so open, send, close, and withdraw can only be called from valid source phases. Version 0.1.1 is on npm as nitroguard. Repo is at github.com/Giri-Aayush/nitroguard.",
+        text: "I started NitroGuard against Nitrolite 0.5.x with a list of five things an app would need on top. When the v1 release landed in March, Yellow had solved two of those five at the SDK layer (state-transition validation and a typed client), and that is exactly the right layer for them. The three that remain are app-shaped: a dispute watcher plus ClearNode silence monitor that auto-submits the latest co-signed state when a challenge lands, channel-state persistence across browser refresh with pluggable storage adapters, and React and Next.js bindings that survive SSR. NitroGuard also adds a channel-lifecycle FSM above Nitrolite's state-advancement validation, so open, send, close, and withdraw can only be called from valid source phases. Version 0.1.1 is on npm as nitroguard. Repo is at github.com/Giri-Aayush/nitroguard.",
       },
       {
         type: "paragraph",
@@ -1116,7 +1116,7 @@ const blogsRaw: Blog[] = [
       {
         type: "code",
         language: "nitroguard channel state machine",
-        text: "VOID        ->  INITIAL       # open() — deposit confirmed on chain\nINITIAL     ->  ACTIVE        # both parties co-signed the opening state\nACTIVE      <-> DISPUTE       # either party can raise; window starts\nDISPUTE     ->  FINAL         # highest co-signed version wins\nFINAL       ->  VOID          # withdraw() — settled on chain\n\n# Any public method called outside its valid source state\n# throws InvalidTransitionError synchronously. No silent corruption.",
+        text: "VOID        ->  INITIAL       # open(): deposit confirmed on chain\nINITIAL     ->  ACTIVE        # both parties co-signed the opening state\nACTIVE      <-> DISPUTE       # either party can raise; window starts\nDISPUTE     ->  FINAL         # highest co-signed version wins\nFINAL       ->  VOID          # withdraw(): settled on chain\n\n# Any public method called outside its valid source state\n# throws InvalidTransitionError synchronously. No silent corruption.",
       },
       {
         type: "paragraph",
@@ -1145,7 +1145,7 @@ const blogsRaw: Blog[] = [
       { type: "heading", text: "What to Watch in 2026" },
       {
         type: "paragraph",
-        text: "Four things worth tracking this year. YELLOW TGE on March 8, 2026 is the first real economic test of Nitrolite in a production clearing business — and the fact Yellow is running the network on their own protocol is the kind of skin-in-the-game I want to see more of. Yellow is funding a $50K grant program and $22K+ hackathons to seed third-party apps; whichever vertical produces the first breakout — trading, gaming, AI billing — shapes where the app-layer tooling investment goes next. Other projects picking up ERC-7824 alongside Yellow is the moment the spec grows past its first adopter into a shared ecosystem primitive. And the app-layer tooling above the SDK is about to be contested; NitroGuard is one attempt, others will ship, and the protocol wins either way.",
+        text: "Four things worth tracking this year. YELLOW TGE on March 8, 2026 is the first real economic test of Nitrolite in a production clearing business, and the fact Yellow is running the network on their own protocol is the kind of skin-in-the-game I want to see more of. Yellow is funding a $50K grant program and $22K+ hackathons to seed third-party apps; whichever vertical produces the first breakout (trading, gaming, AI billing) shapes where the app-layer tooling investment goes next. Other projects picking up ERC-7824 alongside Yellow is the moment the spec grows past its first adopter into a shared primitive across teams. And the app-layer tooling above the SDK is about to be contested; NitroGuard is one attempt, others will ship, and the protocol wins either way.",
       },
       {
         type: "list",
