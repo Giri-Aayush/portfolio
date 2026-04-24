@@ -61,7 +61,7 @@ function Block({ block }: { block: ContentBlock }) {
   if (block.type === "heading") {
     return (
       <h2
-        className="mt-16 mb-6"
+        className="mt-16 mb-6 clear-both"
         style={{
           fontFamily: "var(--font-display)",
           fontSize: "clamp(28px, 3.4vw, 36px)",
@@ -156,8 +156,14 @@ function Block({ block }: { block: ContentBlock }) {
     );
   }
   if (block.type === "image") {
+    const floatClass =
+      block.float === "right"
+        ? "my-6 md:my-2 md:float-right md:max-w-[min(420px,45%)] md:ml-8 md:mb-4"
+        : block.float === "left"
+        ? "my-6 md:my-2 md:float-left md:max-w-[min(420px,45%)] md:mr-8 md:mb-4"
+        : "my-6";
     const figure = (
-      <figure className="my-6">
+      <figure className={floatClass}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={block.src}
@@ -178,22 +184,23 @@ function Block({ block }: { block: ContentBlock }) {
         )}
       </figure>
     );
-    return block.href ? (
+    const wrapped = block.href ? (
       <a
         href={block.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="block transition-opacity hover:opacity-90"
+        className={`transition-opacity hover:opacity-90 ${block.float ? "contents" : "block"}`}
       >
         {figure}
       </a>
     ) : (
       figure
     );
+    return wrapped;
   }
   if (block.type === "references") {
     return (
-      <ul className="list-none pl-0 space-y-2.5">
+      <ul className="list-none pl-0 space-y-2.5 clear-both">
         {block.items.map((item, i) => (
           <li key={i}>
             <a

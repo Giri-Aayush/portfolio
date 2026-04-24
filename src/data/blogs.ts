@@ -14,6 +14,7 @@ export type ContentBlock =
       alt: string;
       caption?: string;
       href?: string;
+      float?: "right" | "left";
     };
 
 export type Blog = {
@@ -64,6 +65,7 @@ const blogsRaw: Blog[] = [
         alt: "Andrej Karpathy on X introducing the LLM Knowledge Bases pattern.",
         caption: "Karpathy's original X post, April 3, 2026. Click for the source.",
         href: "https://x.com/karpathy/status/2039805659525644595",
+        float: "right",
       },
       {
         type: "paragraph",
@@ -177,6 +179,7 @@ const blogsRaw: Blog[] = [
         src: "/blogs/karpathy-killed-my-rag-pipeline/obsidian-graph-view.png",
         alt: "Obsidian graph view of the LLM-maintained wiki: nodes for concepts, tools, people, and sources connected by back-links.",
         caption: "The same wiki in Obsidian's graph view. Every node is a markdown file the LLM wrote; every edge is a back-link it maintained.",
+        float: "right",
       },
       {
         type: "paragraph",
