@@ -38,7 +38,7 @@ const LOREM_PARAGRAPH_C =
 const LOREM_PARAGRAPH_D =
   "Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.";
 
-export const blogs: Blog[] = [
+const blogsRaw: Blog[] = [
   {
     slug: "statelessness-final-frontier",
     date: "25.04.26",
@@ -290,7 +290,11 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "On January 29, 2026, Vitalik Buterin, lightclient, Felix Lange, and other EF researchers published EIP-8141 (Frame Transactions). It defines a new type-0x06 transaction that lets the protocol validate against the account's own code instead of ECDSA, and it is being considered for inclusion in the Hegota fork targeted for late 2026. Native account abstraction at the protocol level is no longer a forum argument. It is on the roadmap.",
+        text: [
+          "On January 29, 2026, Vitalik Buterin, lightclient, Felix Lange, and other EF researchers published ",
+          { text: "EIP-8141 (Frame Transactions)", href: "https://eips.ethereum.org/EIPS/eip-8141" },
+          ". It defines a new type-0x06 transaction that lets the protocol validate against the account's own code instead of ECDSA, and it is being considered for inclusion in the Hegota fork targeted for late 2026. Native account abstraction at the protocol level is no longer a forum argument. It is on the roadmap.",
+        ],
       },
       {
         type: "heading",
@@ -361,7 +365,12 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "EIP-7702 shipped with Pectra on May 7, 2025. The type-0x04 set-code transaction lets an EOA temporarily adopt contract code by delegating to an address. It is the best user-facing upgrade that still respects the EOA. Circle shipped gasless USDC via 7702 paymasters. Safe, Ambire, and Gelato shipped 7702-compatible wallets. The same wallet code now serves an EOA and a pure smart account.",
+        text: [
+          { text: "EIP-7702", href: "https://eips.ethereum.org/EIPS/eip-7702" },
+          " shipped with ",
+          { text: "Pectra on May 7, 2025", href: "https://blog.ethereum.org/2025/04/23/pectra-mainnet" },
+          ". The type-0x04 set-code transaction lets an EOA temporarily adopt contract code by delegating to an address. It is the best user-facing upgrade that still respects the EOA. Circle shipped gasless USDC via 7702 paymasters. Safe, Ambire, and Gelato shipped 7702-compatible wallets. The same wallet code now serves an EOA and a pure smart account.",
+        ],
       },
       {
         type: "paragraph",
@@ -373,7 +382,13 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "$12M drained from 15,000 wallets via malicious delegation signatures (arXiv, Nethermind). Over 90% of observed on-chain 7702 delegations link to sweeper contracts. Attackers watch for signed authorizations, delegate first, run their own init. The authorization tuples are not visible in the transaction fields users typically inspect. The signature looks routine. The consequence is not.",
+        text: [
+          "$12M drained from 15,000 wallets via malicious delegation signatures, documented in an ",
+          { text: "arXiv study", href: "https://arxiv.org/abs/2512.12174" },
+          " and a ",
+          { text: "Nethermind analysis", href: "https://www.nethermind.io/blog/eip-7702-attack-surfaces-what-developers-should-know" },
+          ". Over 90% of observed on-chain 7702 delegations link to sweeper contracts. Attackers watch for signed authorizations, delegate first, run their own init. The authorization tuples are not visible in the transaction fields users typically inspect. The signature looks routine. The consequence is not.",
+        ],
       },
       {
         type: "paragraph",
@@ -400,7 +415,11 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "EIP-8141 builds on the earlier EIP-7701 native-AA design. It defines a type-0x06 transaction made of frames. The spec describes three frame modes: DEFAULT (which executes as an entry point), VERIFY (which runs the account's validation code in a bounded context), and SENDER (which executes on behalf of the sender). Nodes simulate the frames before admitting the transaction to the mempool. The validation code can be ECDSA, multisig, passkeys, social recovery, or post-quantum signature schemes like Lamport, SPHINCS+, or ML-DSA. All of it first-class. All of it inside the same inclusion-list rules as ordinary transactions.",
+        text: [
+          "EIP-8141 builds on the earlier ",
+          { text: "EIP-7701", href: "https://eips.ethereum.org/EIPS/eip-7701" },
+          " native-AA design. It defines a type-0x06 transaction made of frames. The spec describes three frame modes: DEFAULT (which executes as an entry point), VERIFY (which runs the account's validation code in a bounded context), and SENDER (which executes on behalf of the sender). Nodes simulate the frames before admitting the transaction to the mempool. The validation code can be ECDSA, multisig, passkeys, social recovery, or post-quantum signature schemes like Lamport, SPHINCS+, or ML-DSA. All of it first-class. All of it inside the same inclusion-list rules as ordinary transactions.",
+        ],
       },
       {
         type: "paragraph",
@@ -408,7 +427,11 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "EIP-8141 is not alone. EIP-8130 (Chris Hunter, Coinbase, October 2025) takes a different approach: rather than let each account ship arbitrary Solidity in its validation path, it has transactions declare an explicit verifier contract and register owners through an on-chain Account Configuration. Nodes can filter on the verifier without full EVM simulation. Paradigm's Tempo proposal goes further in that direction, defining a narrow transaction-level primitive (type 0x76) with batching, passkeys, and occasional sponsorship, and deliberately refusing to support arbitrary validation logic. All three proposals agree native AA has to happen at L1. The argument is about scope on day one, not direction.",
+        text: [
+          "EIP-8141 is not alone. ",
+          { text: "EIP-8130", href: "https://eips.ethereum.org/EIPS/eip-8130" },
+          " (Chris Hunter, Coinbase, October 2025) takes a different approach: rather than let each account ship arbitrary Solidity in its validation path, it has transactions declare an explicit verifier contract and register owners through an on-chain Account Configuration. Nodes can filter on the verifier without full EVM simulation. Paradigm's Tempo proposal goes further in that direction, defining a narrow transaction-level primitive (type 0x76) with batching, passkeys, and occasional sponsorship, and deliberately refusing to support arbitrary validation logic. All three proposals agree native AA has to happen at L1. The argument is about scope on day one, not direction.",
+        ],
       },
       {
         type: "paragraph",
@@ -501,7 +524,7 @@ export const blogs: Blog[] = [
   },
   {
     slug: "wtf-is-op-cat",
-    date: "22.10.24",
+    date: "14.02.26",
     readTime: "11 MIN READ",
     title: "WTF is OP_CAT? Why Should We Care?",
     description:
@@ -691,7 +714,7 @@ export const blogs: Blog[] = [
         type: "paragraph",
         text: [
           { text: "Fractal Bitcoin launched its mainnet", href: "https://fractalbitcoin.io/updates/fractal-mainnet-launches-press-release" },
-          " on September 9, 2024 with OP_CAT activated from genesis. The CAT20 token standard, the CAT Protocol bridge, and a handful of inscription-adjacent tooling have been running against it in production for roughly nineteen months. Fractal is a separate chain running a hybrid SHA-256d proof-of-work model its team calls cadence mining: a portion of blocks are merge-mined with Bitcoin, the rest are produced by a permissionless Fractal-only miner set. The data Fractal produces is evidence of the opcode's behavior under load, not of Bitcoin social adoption.",
+          " on September 9, 2024 with OP_CAT activated from genesis. The CAT20 token standard, the CAT Protocol bridge, and a handful of inscription-adjacent tooling have been running against it in production since launch. Fractal is a separate chain running a hybrid SHA-256d proof-of-work model its team calls cadence mining: a portion of blocks are merge-mined with Bitcoin, the rest are produced by a permissionless Fractal-only miner set. The data Fractal produces is evidence of the opcode's behavior under load, not of Bitcoin social adoption.",
         ],
       },
       {
@@ -728,7 +751,7 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "The hardest objection to answer is unintended consequences. Recursive covenants (state forced to persist across spends) are theoretically possible with OP_CAT plus a couple of other primitives. Nobody has shipped one that works. If they exist and behave badly, the damage is structural rather than reversible. The usual response is that Bitcoin Inquisition is where you find out. Nineteen months in, the live experiment has produced demos and a verified STARK proof, not disaster.",
+        text: "The hardest objection to answer is unintended consequences. Recursive covenants (state forced to persist across spends) are theoretically possible with OP_CAT plus a couple of other primitives. Nobody has shipped one that works. If they exist and behave badly, the damage is structural rather than reversible. The usual response is that Bitcoin Inquisition is where you find out. Roughly two years in, the live experiment has produced demos and a verified STARK proof, not disaster.",
       },
       {
         type: "heading",
@@ -745,9 +768,9 @@ export const blogs: Blog[] = [
       {
         type: "paragraph",
         text: [
-          "BIP-347 is marked Complete. The spec is merged. The tests pass. The implementation exists. Bitcoin has not coordinated on an activation path, and it is not obvious when or how it will. ",
-          { text: "Eli Ben-Sasson told Cointelegraph in 2024", href: "https://cointelegraph.com/news/op-cat-may-go-live-bitcoin-within-12-months-starkware-eli-ben-sasson" },
-          " that activation within twelve months was plausible. That window has closed. The window after it is open.",
+          "The spec is merged. The tests pass. The implementation exists. Bitcoin has not coordinated on an activation path, and it is not obvious when or how it will. ",
+          { text: "Eli Ben-Sasson recently told Cointelegraph", href: "https://cointelegraph.com/news/op-cat-may-go-live-bitcoin-within-12-months-starkware-eli-ben-sasson" },
+          " that activation within twelve months is plausible. The next year is the one that decides.",
         ],
       },
       {
@@ -784,7 +807,7 @@ export const blogs: Blog[] = [
     readTime: "10 MIN READ",
     title: "State Channels, Round Two.",
     description:
-      "ERC-7824 shipped as a draft in January 2025 and Yellow Network is betting a crypto clearing business on the reference implementation. The protocol is done; whether Web3's session layer actually gets used in 2026 depends on the tooling arriving on time.",
+      "ERC-7824 shipped as a draft in January 2025 and Yellow Network is building a real crypto clearing business on the reference implementation. The protocol layer is ready. The opinionated layer above the SDK is where the next year of state-channel apps gets shaped.",
     status: "published",
     content: [
       {
@@ -876,28 +899,28 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "Three pieces it does not give you. I built on top of the SDK with an actual application in mind and hit the same three gaps every time.",
+        text: "Three pieces it intentionally leaves to the app layer. That is the right call for a reference SDK — every product will want these solved a little differently. I built on top with an actual application in mind and ended up solving the same three each time.",
       },
       {
         type: "list",
         items: [
-          "No automatic dispute response. The client exposes challenge() and emits HomeChannelChallengedEvent, but noticing a stale challenge on chain, reconstructing your latest co-signed state, and submitting it before the window closes is on the application.",
-          "No channel-state persistence. ClientAssetStore caches asset metadata, but channel state across a browser refresh or process restart is the application's problem. Wire up storage yourself or the channel is gone.",
-          "No React or Next.js bindings. Transport initialization, hydration, and SSR are each project's problem. Drop the v1 client into a Next.js App Router app and it will not just work.",
+          "Dispute response is manual, by design. The client exposes challenge() and emits HomeChannelChallengedEvent; the app decides when and how to watch, reconstruct the latest co-signed state, and submit before the window closes. This lets each product pick its own reliability model.",
+          "Channel-state persistence is app-side. ClientAssetStore caches asset metadata, and channel state across browser refresh or process restart is wired up per app — which storage backend, what TTL, what recovery semantics. That is a choice, not an oversight.",
+          "No framework bindings, and that is the right call for a framework-agnostic SDK. Transport initialization, hydration, and SSR are each project's problem to solve for its own stack.",
         ],
       },
       {
         type: "quote",
-        text: "The bottleneck is not the protocol. It is the layer between the protocol and an app that can actually ship on it.",
+        text: "Protocols ship. SDKs ship. What defines the next year is the opinionated layer above — the one that makes shipping an app on state channels feel like shipping on anything else.",
       },
       { type: "heading", text: "The Tooling Gap" },
       {
         type: "paragraph",
-        text: "The gap between a shipped protocol and teams shipping production apps on it is the part nobody announces. Ethereum had it until ethers and then viem closed it. Rollups had it until Conduit, Caldera, and similar tooling matured. State channels are in exactly that phase now. Primitives exist. Spec exists. What does not exist yet is the piece that lets a normal product team ship on top without first writing half a framework.",
+        text: "Every protocol goes through the same phase after it ships. Ethereum had it until ethers and then viem matured. Rollups had it until Conduit, Caldera, and similar tooling showed up. State channels are in exactly that phase now. The primitives are there. The spec is there. The v1 SDK is there. What the next round of work is about is the opinionated layer above — the piece that lets a product team ship without also having to become a state-channel library author.",
       },
       {
         type: "paragraph",
-        text: "I built NitroGuard against the 0.5.x Nitrolite surface, before the v1 migration closed two of the five gaps I originally hit. Three remain, and that is enough to still justify the layer. NitroGuard is a TypeScript SDK that wraps the state-channel client and adds a dispute watcher plus ClearNode silence monitor that auto-submits the latest co-signed state when a challenge lands, channel-state persistence across browser refresh with pluggable storage adapters, and React and Next.js bindings that survive SSR. It also enforces a channel-lifecycle FSM above Nitrolite's state-advancement validation, so open, send, close, and withdraw can only be called from valid source phases. Version 0.1.1 is on npm as nitroguard. Repo is at github.com/Giri-Aayush/nitroguard.",
+        text: "I started NitroGuard against Nitrolite 0.5.x with a list of five things an app would need on top. When the v1 release landed in March, Yellow had solved two of those five at the SDK layer — state-transition validation and a typed client — and that is exactly the right layer for them. The three that remain are app-shaped: a dispute watcher plus ClearNode silence monitor that auto-submits the latest co-signed state when a challenge lands, channel-state persistence across browser refresh with pluggable storage adapters, and React and Next.js bindings that survive SSR. NitroGuard also adds a channel-lifecycle FSM above Nitrolite's state-advancement validation, so open, send, close, and withdraw can only be called from valid source phases. Version 0.1.1 is on npm as nitroguard. Repo is at github.com/Giri-Aayush/nitroguard.",
       },
       {
         type: "paragraph",
@@ -910,7 +933,7 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "The framing I use for NitroGuard is the same framing wagmi has against raw ethers, or React Query against raw fetch. It does not replace the protocol library. It makes the protocol library usable in an app without each team re-solving the same five missing pieces. If a different team ships a better tooling layer next quarter, the protocol wins either way.",
+        text: "The framing I use for NitroGuard is the same framing wagmi has against raw ethers, or React Query against raw fetch. It does not replace the protocol library. It lives on top, doing the three app-layer pieces each team would otherwise re-solve. If a different team ships a better tooling layer next quarter, the protocol wins either way.",
       },
       { type: "heading", text: "Where State Channels Win (And Where They Do Not)" },
       {
@@ -935,14 +958,14 @@ export const blogs: Blog[] = [
       { type: "heading", text: "What to Watch in 2026" },
       {
         type: "paragraph",
-        text: "Four things worth tracking this year. YELLOW TGE on March 8, 2026 is the first real economic test of Nitrolite in a production clearing business. Yellow is running a $50K grant program and $22K+ hackathons to seed third-party apps; the first breakout vertical, whether it lands in trading, gaming, or AI billing, shapes where tooling investment goes next. Second implementers of ERC-7824 outside Yellow are the signal that a single-project protocol has become a standard. The tooling layer above the protocol is about to be contested. NitroGuard is one attempt. Others will ship.",
+        text: "Four things worth tracking this year. YELLOW TGE on March 8, 2026 is the first real economic test of Nitrolite in a production clearing business — and the fact Yellow is running the network on their own protocol is the kind of skin-in-the-game I want to see more of. Yellow is funding a $50K grant program and $22K+ hackathons to seed third-party apps; whichever vertical produces the first breakout — trading, gaming, AI billing — shapes where the app-layer tooling investment goes next. Other projects picking up ERC-7824 alongside Yellow is the moment the spec grows past its first adopter into a shared ecosystem primitive. And the app-layer tooling above the SDK is about to be contested; NitroGuard is one attempt, others will ship, and the protocol wins either way.",
       },
       {
         type: "list",
         items: [
           "March 8, 2026. YELLOW TGE and the first economic test of Nitrolite in production clearing.",
           "Grant-funded apps on Nitrolite across trading, gaming, and AI billing through 2026.",
-          "Second implementers of ERC-7824 outside Yellow.",
+          "Other teams picking up ERC-7824 alongside Yellow's reference implementation.",
           "A tooling layer that closes the protocol-to-application gap. NitroGuard is one attempt; others will ship.",
         ],
       },
@@ -953,7 +976,7 @@ export const blogs: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "State channels as an idea are not the story. Three pieces landing in the same year is the story: the standard, the production test, and the tooling. The protocol is already shipped. The business reason is already there. Whether Web3's session layer gets used in 2026 depends on whether the tooling layer gets built fast enough to meet them.",
+        text: "State channels as an idea are not the story. Three pieces landing in the same year is the story: the standard in draft, the production deployment live, and the app-layer tooling beginning to show up. Yellow has done the first two with a discipline most protocols never get. What the rest of us build on top defines the third.",
       },
       { type: "heading", text: "References" },
       {
@@ -1176,3 +1199,12 @@ export const blogs: Blog[] = [
     ],
   },
 ];
+
+const parseBlogDate = (d: string): number => {
+  const [dd, mm, yy] = d.split(".").map(Number);
+  return new Date(2000 + yy, mm - 1, dd).getTime();
+};
+
+export const blogs: Blog[] = [...blogsRaw].sort(
+  (a, b) => parseBlogDate(b.date) - parseBlogDate(a.date)
+);

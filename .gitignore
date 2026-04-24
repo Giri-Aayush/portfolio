@@ -24,6 +24,10 @@ screenshots/
 test-results/
 playwright-report/
 
+# claude
+.claude/
+checks.md
+
 # misc
 .DS_Store
 *.tsbuildinfo

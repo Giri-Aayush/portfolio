@@ -1,28 +1,9 @@
-const articles = [
-  {
-    date: "04.12.24",
-    readTime: "8 MIN READ",
-    title: "The Case for Sovereign Rollups on Bitcoin.",
-    description:
-      "Exploration of the Ordinals theory and how L2s are finding their way into the most secure settlement layer on earth.",
-  },
-  {
-    date: "22.10.24",
-    readTime: "12 MIN READ",
-    title: "Statelessness: The Final Frontier of Decentralization.",
-    description:
-      "Verkle trees and the journey towards making node requirements so light a smartphone can secure the network.",
-  },
-  {
-    date: "15.08.24",
-    readTime: "5 MIN READ",
-    title: "ERC-4337 is Not Enough.",
-    description:
-      "Why native Account Abstraction at the protocol level is the only way to achieve mainstream adoption.",
-  },
-];
+import Link from "next/link";
+import { blogs } from "@/data/blogs";
 
 export function Logs() {
+  const preview = blogs.slice(0, 3);
+
   return (
     <section id="logs" className="px-8 mb-28">
       <div className="editorial-grid">
@@ -36,8 +17,12 @@ export function Logs() {
         </div>
 
         <div className="col-span-12 md:col-span-8 space-y-16">
-          {articles.map((article) => (
-            <article key={article.title} className="group">
+          {preview.map((article) => (
+            <Link
+              key={article.slug}
+              href={`/blogs/${article.slug}`}
+              className="block group"
+            >
               <div className="flex justify-between items-start mb-4">
                 <span className="font-label text-xs text-secondary">
                   {article.date}
@@ -53,10 +38,17 @@ export function Logs() {
                 {article.description}
               </p>
               <span className="font-label text-[10px] text-outline-variant tracking-[0.3em] uppercase">
-                COMING_SOON
+                {article.status === "published" ? "READ [→]" : "COMING_SOON"}
               </span>
-            </article>
+            </Link>
           ))}
+
+          <Link
+            href="/blogs"
+            className="font-label text-[10px] tracking-[0.3em] uppercase bg-primary text-surface px-6 py-3 hover:bg-primary-dim transition-colors inline-block w-fit font-bold"
+          >
+            VIEW_ALL_BLOGS [→]
+          </Link>
         </div>
       </div>
     </section>

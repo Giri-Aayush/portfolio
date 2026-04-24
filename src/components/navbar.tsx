@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 const navLinks = [
-  { label: "ABOUT", href: "#hero" },
-  { label: "EXPERIENCE", href: "#chronicle" },
-  { label: "AWARDS", href: "#awards" },
-  { label: "VIDEOS", href: "#transmission" },
-  { label: "BLOGS", href: "#logs" },
-  { label: "OSS", href: "#terminal" },
+  { label: "ABOUT", href: "/#hero" },
+  { label: "EXPERIENCE", href: "/#chronicle" },
+  { label: "AWARDS", href: "/#awards" },
+  { label: "VIDEOS", href: "/#transmission" },
+  { label: "BLOGS", href: "/blogs" },
+  { label: "OSS", href: "/#terminal" },
 ];
 
 export function Navbar() {
