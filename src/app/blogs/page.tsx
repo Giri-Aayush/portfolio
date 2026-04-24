@@ -22,7 +22,7 @@ export default function BlogsPage() {
     <>
       <Navbar />
       <main className="pt-32 pb-16">
-        <section className="wrap mb-24">
+        <section className="wrap mb-20 md:mb-28">
           <div className="seclabel mb-6 reveal">Writing · archive</div>
           <h1
             className="display reveal d-1"
