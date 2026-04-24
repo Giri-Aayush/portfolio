@@ -6,10 +6,12 @@ export function Contact() {
       <div className="wrap relative">
         <div className="seclabel reveal mb-6">Contact · say hi</div>
         <h2
-          className="display reveal d-1 mb-12 relative"
+          className="display reveal d-1 relative"
           style={{
             fontSize: "clamp(56px, 10vw, 140px)",
             lineHeight: 1.02,
+            paddingBottom: "0.18em",
+            marginBottom: "2.5rem",
           }}
         >
           Let&apos;s

@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 const siteUrl = "https://aayushgiri.dev";
 const title = "Aayush Giri // Senior DevRel Engineer";
 const description =
-  "Senior Developer Relations Engineer at Nethermind. 15+ conference talks, 3 ETHGlobal wins. Specializing in ZK proofs, rollups, Starknet, Aztec, and Ethereum infrastructure.";
+  "Senior Developer Relations Engineer at Nethermind. 5+ years shipping SDKs, developer tooling, and protocol integrations across EVM and non-EVM. 15+ talks, 3 ETHGlobal wins.";
 
 export const metadata: Metadata = {
   title,

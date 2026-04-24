@@ -113,8 +113,8 @@ export function Hero() {
               }}
             >
               Senior Developer Relations Engineer at Nethermind. 5+ years
-              building software across zero-knowledge cryptography, AI agent
-              tooling, and Ethereum infrastructure. I close the gap between
+              shipping SDKs, developer tooling, and protocol integrations
+              across EVM and non-EVM ecosystems. I close the gap between
               complex protocols and the developers building on top of them.
             </p>
             <div className="social-bar">

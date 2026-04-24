@@ -123,7 +123,7 @@ export const config = {
       name: "nitroguard",
       repo: "nitroguard",
       description:
-        "State channel lifecycle SDK for ERC-7824 / Yellow Network. Auto-dispute, persistence, typed payloads.",
+        "State channel lifecycle SDK for ERC-7824 / Yellow Network. Auto-dispute, persistence, typed payloads. State machine, Zod schemas, React hooks.",
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
@@ -175,7 +175,7 @@ export const config = {
       name: "faucet-terminal",
       repo: "faucet-terminal",
       description:
-        "Get testnet tokens from your terminal. Supports Starknet & Ethereum Sepolia. 1400+ npm downloads.",
+        "Get testnet tokens from your terminal. Supports Starknet & Ethereum Sepolia. 1,200+ npm downloads in first three weeks, zero marketing spend.",
       language: "Go",
       langColor: "#00ADD8",
       stars: 2,
@@ -195,7 +195,7 @@ export const config = {
       name: "starknet-mcp",
       repo: "starknet-mcp",
       description:
-        "MCP server letting AI agents query state, send transactions, and automate tasks on Starknet.",
+        "20+ MCP tools bridging Cursor and Claude with Starknet on-chain data. Query state, send transactions, automate tasks.",
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
