@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Long-form writing on zero-knowledge cryptography, rollup architecture, account abstraction, and the infrastructure that keeps the open web open.",
   alternates: {
-    canonical: "https://aayushgiri.dev/blogs",
+    canonical: "https://aayush-giri.netlify.app/blogs",
   },
 };
 

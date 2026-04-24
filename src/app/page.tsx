@@ -12,7 +12,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Aayush Giri",
-  url: "https://aayushgiri.dev",
+  url: "https://aayush-giri.netlify.app",
   jobTitle: "Senior Developer Relations Engineer",
   worksFor: {
     "@type": "Organization",

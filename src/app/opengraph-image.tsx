@@ -56,7 +56,7 @@ export default async function OpengraphImage() {
               boxShadow: `0 0 16px ${CYAN}`,
             }}
           />
-          <div style={{ display: "flex" }}>Portfolio · aayushgiri.dev</div>
+          <div style={{ display: "flex" }}>Portfolio · aayush-giri.netlify.app</div>
         </div>
 
         {/* name + role pill + tagline */}
@@ -166,7 +166,7 @@ export default async function OpengraphImage() {
               textTransform: "none",
             }}
           >
-            aayushgiri.dev
+            aayush-giri.netlify.app
           </div>
         </div>
       </div>

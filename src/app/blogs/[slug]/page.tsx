@@ -46,13 +46,13 @@ export async function generateMetadata({
     title: `${blog.title} // Aayush Giri`,
     description: blog.description,
     alternates: {
-      canonical: `https://aayushgiri.dev/blogs/${blog.slug}`,
+      canonical: `https://aayush-giri.netlify.app/blogs/${blog.slug}`,
     },
     openGraph: {
       type: "article",
       title: blog.title,
       description: blog.description,
-      url: `https://aayushgiri.dev/blogs/${blog.slug}`,
+      url: `https://aayush-giri.netlify.app/blogs/${blog.slug}`,
     },
   };
 }
@@ -247,9 +247,9 @@ export default async function BlogPostPage({
     author: {
       "@type": "Person",
       name: "Aayush Giri",
-      url: "https://aayushgiri.dev",
+      url: "https://aayush-giri.netlify.app",
     },
-    url: `https://aayushgiri.dev/blogs/${blog.slug}`,
+    url: `https://aayush-giri.netlify.app/blogs/${blog.slug}`,
   };
 
   return (

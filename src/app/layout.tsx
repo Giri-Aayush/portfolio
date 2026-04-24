@@ -21,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://aayushgiri.dev";
+const siteUrl = "https://aayush-giri.netlify.app";
 const title = "Aayush Giri // Senior DevRel Engineer";
 const description =
   "Senior Developer Relations Engineer at Nethermind. 5+ years shipping SDKs, developer tooling, and protocol integrations across EVM and non-EVM. 15+ talks, 3 ETHGlobal wins.";
