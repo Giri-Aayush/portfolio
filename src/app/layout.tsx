@@ -105,7 +105,7 @@ export default function RootLayout({
         jetbrainsMono.variable
       )}
     >
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

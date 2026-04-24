@@ -44,7 +44,7 @@ export function Contact() {
         <div className="wrap">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-5 flex-wrap">
             <div className="mono">
-              © {new Date().getFullYear()} · Kathmandu / remote
+              © {new Date().getFullYear()} · Remote / Global
             </div>
             <div className="flex gap-[18px] mono">
               <a

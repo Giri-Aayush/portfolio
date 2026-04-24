@@ -359,10 +359,16 @@ html.light .nav-bar.scrolled {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-lg);
-  aspect-ratio: 4/5;
+  aspect-ratio: 4 / 4.4;
+  max-height: 620px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+@media (min-width: 1280px) {
+  .portrait-card {
+    max-height: 680px;
+  }
 }
 html.light .portrait-card {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.01));

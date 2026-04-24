@@ -34,17 +34,11 @@ export function Hero() {
   ];
 
   return (
-    <section id="hero" className="hero-ambient relative pt-[140px] pb-10">
+    <section id="hero" className="hero-ambient relative pt-[100px] pb-6">
       <div className="wrap relative z-[1]">
         <div className="grid gap-7 md:[grid-template-columns:1.1fr_1fr]">
           {/* Portrait card */}
-          <div className="portrait-card reveal">
-            <div className="absolute top-6 left-6 z-[2]">
-              <span className="pill cyan">
-                <span className="dot" />
-                Available · May 2026
-              </span>
-            </div>
+          <div className="portrait-card reveal group">
             <div className="flex-1 rounded-[22px] relative overflow-hidden">
               <Image
                 src="/profile.png"
@@ -52,11 +46,10 @@ export function Hero() {
                 fill
                 priority
                 sizes="(max-width: 960px) 100vw, 50vw"
-                className="object-cover"
-                style={{ filter: "grayscale(1) contrast(1.02)" }}
+                className="object-cover grayscale contrast-[1.02] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-[1.02]"
               />
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 pointer-events-none transition-opacity duration-700 group-hover:opacity-70"
                 style={{
                   background:
                     "linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.55))",
@@ -87,8 +80,6 @@ export function Hero() {
                 className="mono text-right"
                 style={{ color: "rgba(255,255,255,0.55)" }}
               >
-                Kathmandu
-                <br />
                 Remote · Global
               </div>
             </div>
