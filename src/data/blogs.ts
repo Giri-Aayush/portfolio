@@ -40,6 +40,197 @@ const LOREM_PARAGRAPH_D =
 
 const blogsRaw: Blog[] = [
   {
+    slug: "karpathy-killed-my-rag-pipeline",
+    date: "15.04.26",
+    readTime: "8 MIN READ",
+    title: "Andrej Karpathy Just Killed My RAG Pipeline.",
+    description:
+      "On April 3, 2026, Karpathy posted a gist with no new framework, no benchmarks, and no infra. It got 16 million views on X and 5,000 stars. The reason is that it quietly showed the RAG stack most of us were paying for was never needed at our scale.",
+    status: "published",
+    content: [
+      {
+        type: "paragraph",
+        text: [
+          "On April 3, 2026, Andrej Karpathy posted a ",
+          { text: "gist titled \"LLM Wiki\"", href: "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" },
+          ". The ",
+          { text: "linked X post", href: "https://x.com/karpathy/status/2039805659525644595" },
+          " has 16 million views as of this writing. The gist has 5,000 stars and 485 comments. It contains no new framework, no benchmark table, no repo. It describes a folder of markdown files that an LLM keeps up to date.",
+        ],
+      },
+      {
+        type: "image",
+        src: "/blogs/karpathy-killed-my-rag-pipeline/karpathy-tweet.png",
+        alt: "Andrej Karpathy on X introducing the LLM Knowledge Bases pattern.",
+        caption: "Karpathy's original X post, April 3, 2026. Click for the source.",
+        href: "https://x.com/karpathy/status/2039805659525644595",
+      },
+      {
+        type: "paragraph",
+        text: "The post killed my RAG pipeline in an afternoon.",
+      },
+      {
+        type: "paragraph",
+        text: "I want to be honest about what that sentence means. I am not claiming RAG is dead. I am claiming that the RAG pipeline I was running against a 90,000-word research corpus, with an embedding model, a vector store, a chunker, and a LangChain-shaped retrieval layer, was strictly worse on cost, maintenance, and answer quality than pointing Claude Code at a folder of markdown. That is the claim. The rest of this post defends it.",
+      },
+      {
+        type: "heading",
+        text: "What Karpathy Actually Proposed",
+      },
+      {
+        type: "paragraph",
+        text: "The gist is three things. A raw/ folder, immutable, that holds source documents the LLM reads but never modifies. A wiki/ folder, mutable, that holds markdown articles the LLM writes and maintains, including an index.md. And a CLAUDE.md at the root that tells the agent how the vault is organized and how to update it.",
+      },
+      {
+        type: "paragraph",
+        text: "That is the whole system. The LLM reads new material dropped into raw/, writes summary articles into wiki/, and back-links across existing articles. When you ask a question, the agent reads the index first, opens only the wiki articles it needs, and answers from those. No embeddings. No chunker. No similarity search.",
+      },
+      {
+        type: "quote",
+        text: "I thought I had to reach for fancy RAG, but the LLM has been pretty good about auto-maintaining index files.",
+      },
+      {
+        type: "paragraph",
+        text: [
+          "That is the line people keep quoting from ",
+          { text: "his tweet", href: "https://x.com/karpathy/status/2039805659525644595" },
+          ", and it is the whole thesis. The vendor stack most teams built between 2022 and 2024 assumed the LLM could not be trusted to find the right material on its own. That assumption aged badly.",
+        ],
+      },
+      {
+        type: "heading",
+        text: "The Scale Where This Works",
+      },
+      {
+        type: "paragraph",
+        text: "Karpathy explicitly scopes the pattern to individual researchers. His own wiki he describes at \"~100 sources, ~hundreds of pages.\" Third-party analyses converge on ~50,000 to ~100,000 tokens of compiled wiki content as the break-even point where the pattern starts to lose to traditional RAG. Below that, the LLM reads the index and grabs three or four articles per query. Above that, context-window cost and attention fall-off start to matter again.",
+      },
+      {
+        type: "code",
+        language: "scale comparison",
+        text: "# LLM Wiki (raw/ + wiki/ + CLAUDE.md)\nreads per query         = index.md + 2–4 wiki articles\nembedding infra         = none\nvector store            = none\nchunker / re-embed      = none\ntoken cost per query    = 1x (read only relevant articles)\nmaintenance             = re-run LLM lint pass\nworks well up to        = ~100k tokens of compiled wiki content\n\n# Traditional RAG (embed + vector + retrieve)\nreads per query         = top-k chunks via similarity\nembedding infra         = embedding model + vector DB + pipeline\nvector store            = Pinecone / Weaviate / Chroma / pgvector\nchunker / re-embed      = required on every source change\ntoken cost per query    = top-k × chunk size (often overshoots)\nmaintenance             = re-chunk, re-embed, tune k\nworks well above        = millions of documents with stable schema",
+      },
+      {
+        type: "paragraph",
+        text: "A MindStudio analysis published around the same time benchmarked token usage for a small-scale knowledge base, and measured up to a 95% reduction against naive full-document loading. That is not a claim about RAG specifically. It is a claim about \"read the index, open the right article, answer\" beating \"stuff everything in context.\" But the shape of the result matches what I saw on my own corpus, which is the part I care about.",
+      },
+      {
+        type: "heading",
+        text: "Why the Pattern Works Now and Did Not in 2023",
+      },
+      {
+        type: "paragraph",
+        text: "Three things had to land before this pattern could beat RAG.",
+      },
+      {
+        type: "list",
+        items: [
+          "Context window growth. GPT-3.5 shipped with 4K tokens in March 2023. Claude 3 shipped with 200K in March 2024. Current Claude and Gemini models run 200K to 1M token contexts. Read-the-whole-relevant-article became tractable.",
+          "Tool-using coding agents. Claude Code, Codex CLI, and equivalent shells made read_file, grep, and glob first-class. The agent can walk a directory the way a human would, which is what the wiki pattern assumes.",
+          "Long-horizon instruction-following. Claude Sonnet 4.5 and Opus 4.x hold a multi-step schema across dozens of file edits without drifting. Maintaining an index.md and back-links across 100 articles is now a task the model handles without a framework.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "If you tried this exact pattern in 2023, you would have gotten a confused wiki with broken back-links and duplicate articles. That is not a criticism of 2023. It is the reason the RAG infrastructure stack got built in the first place. It was the correct answer to the model capability that existed then.",
+      },
+      {
+        type: "heading",
+        text: "Where RAG Still Wins",
+      },
+      {
+        type: "paragraph",
+        text: "Karpathy says this himself and it is worth repeating without softening. Above a million documents, when the wiki itself would not fit in context, traditional retrieval is still the answer. Same for any workload where documents change rapidly, where different users need access-controlled subsets, or where the corpus is adversarial and the index can be poisoned. Those cases pay for the vector DB for real reasons.",
+      },
+      {
+        type: "paragraph",
+        text: "The honest size-by-audience table:",
+      },
+      {
+        type: "list",
+        items: [
+          "Personal research vault at up to a few hundred thousand words: wiki pattern.",
+          "Team knowledge base, static, under ten thousand documents: wiki pattern with a scheduled lint pass.",
+          "Product search over a changing product catalog: traditional RAG.",
+          "Enterprise document store with ACLs and millions of documents: traditional RAG, often with hybrid BM25 plus embedding.",
+          "Customer-facing chatbot that cannot leak across tenants: traditional RAG with tenant-scoped indexes.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "The point of Karpathy's post is not that RAG is over. It is that the lower bound where RAG starts paying for itself moved up, and a lot of teams have been paying on the wrong side of that line.",
+      },
+      {
+        type: "heading",
+        text: "What I Actually Migrated",
+      },
+      {
+        type: "paragraph",
+        text: "I ran a personal research vault on roughly 90,000 words across 60-ish documents. It was embedded with text-embedding-3-small, stored in a small pgvector table, chunked at 512 tokens with 128 overlap, retrieved top-5. The retrieval was fine. The answers were fine. The cost per query was the part that bothered me, because re-embedding on source update and maintaining the chunker were carrying real ops overhead.",
+      },
+      {
+        type: "paragraph",
+        text: "I deleted the embedding pipeline and the vector table. I moved the source documents to raw/. I pointed Claude Code at the folder with a CLAUDE.md describing the vault and asked it to generate wiki/ from scratch. It took about fourteen minutes on the first ingest and produced sixty-three wiki articles plus an index. Query cost dropped to what Claude Code normally costs when it opens three or four files to answer a question. Answer quality improved because the wiki articles resolve their own ambiguity with back-links, which ranked chunks never did.",
+      },
+      {
+        type: "image",
+        src: "/blogs/karpathy-killed-my-rag-pipeline/obsidian-graph-view.png",
+        alt: "Obsidian graph view of the LLM-maintained wiki: nodes for concepts, tools, people, and sources connected by back-links.",
+        caption: "The same wiki in Obsidian's graph view. Every node is a markdown file the LLM wrote; every edge is a back-link it maintained.",
+      },
+      {
+        type: "paragraph",
+        text: "I kept a branch with the RAG pipeline for two weeks to A/B test on my own queries. I have not switched back.",
+      },
+      {
+        type: "heading",
+        text: "Who Should Care, and Why",
+      },
+      {
+        type: "paragraph",
+        text: "If you run a personal research vault, a team wiki, or a founder's \"second brain,\" this pattern is strictly better on cost and setup. You should migrate before you ship another RAG feature.",
+      },
+      {
+        type: "paragraph",
+        text: "If you run a RAG product, read the gist carefully and figure out where on the scale curve your users actually sit. If most of your customers are below the hundred-thousand-token line and are paying your infra bill, you have a product-positioning problem you are about to find out about from someone on X.",
+      },
+      {
+        type: "paragraph",
+        text: "If you build agent infra, the lesson is that tool-using agents plus long context eat infrastructure that assumed the model was weak. That pattern is going to repeat. Re-rankers, routers, query planners, anything whose purpose was to compensate for a limitation that no longer exists. Price accordingly.",
+      },
+      {
+        type: "heading",
+        text: "How the Pieces Fit",
+      },
+      {
+        type: "paragraph",
+        text: "The RAG industrial complex built the right stack for 2023 model capability. It kept shipping through 2024 and 2025, and vendors kept adding features while the models underneath got enough better that the features stopped being load-bearing. Karpathy's gist is not a new idea. The idea is as old as wiki software itself. What is new is that the LLM can now run the wiki.",
+      },
+      {
+        type: "paragraph",
+        text: "The reason the post went to 16 million views on a platform that mostly ignores infrastructure takes is that a lot of people were already feeling this and needed someone credible to say it out loud. My RAG pipeline is deleted. My wiki is in a folder. The model is doing the job the vector database was doing, and doing it better. That is the verdict.",
+      },
+      {
+        type: "heading",
+        text: "References",
+      },
+      {
+        type: "references",
+        items: [
+          { label: "Andrej Karpathy: LLM Wiki (gist)", url: "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" },
+          { label: "Karpathy on X: LLM Knowledge Bases (original post)", url: "https://x.com/karpathy/status/2039805659525644595" },
+          { label: "Alex Prompter on X: the \"fancy RAG\" quote thread", url: "https://x.com/alex_prompter/status/2039853870810108384" },
+          { label: "VentureBeat: Karpathy's LLM Knowledge Base architecture", url: "https://venturebeat.com/data/karpathy-shares-llm-knowledge-base-architecture-that-bypasses-rag-with-an" },
+          { label: "MindStudio: LLM Wiki vs RAG token-usage analysis", url: "https://www.mindstudio.ai/blog/llm-wiki-vs-rag-markdown-knowledge-base-comparison" },
+          { label: "Atlan: LLM Wiki vs RAG enterprise reality", url: "https://atlan.com/know/llm-wiki-vs-rag-knowledge-base/" },
+          { label: "Remio: 16 million views for a folder structure", url: "https://www.remio.ai/post/andrej-karpathy-published-an-llm-wiki-pattern-16-million-views-for-a-folder-structure" },
+          { label: "Level Up Coding: Beyond RAG (Plaban Nayak)", url: "https://levelup.gitconnected.com/beyond-rag-how-andrej-karpathys-llm-wiki-pattern-builds-knowledge-that-actually-compounds-31a08528665e" },
+          { label: "DEV Community: Reports of RAG's death have been greatly exaggerated", url: "https://dev.to/kenforthewin/reports-of-rags-death-have-been-greatly-exaggerated-50ee" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "erc-8004-agents-onchain",
     date: "27.04.26",
     readTime: "10 MIN READ",
