@@ -235,7 +235,7 @@ const blogsRaw: Blog[] = [
   },
   {
     slug: "erc-8004-agents-onchain",
-    date: "27.04.26",
+    date: "01.09.25",
     readTime: "10 MIN READ",
     title: "ERC-8004: The Standard That Decides Whether AI Agents on Chain Is Real.",
     description:
