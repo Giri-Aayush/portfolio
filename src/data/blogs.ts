@@ -792,6 +792,7 @@ const blogsRaw: Blog[] = [
         src: "/blogs/erc-4337-is-not-enough/vitalik-eip8141-tweet.png",
         alt: "Vitalik Buterin on X discussing FOCIL and EIP-8141",
         caption: "Vitalik Buterin on X: under FOCIL plus EIP-8141, any transaction (smart-wallet, gas-sponsored, privacy-protocol) can be included directly by any of 17 randomly chosen actors per slot. Click for the source post.",
+        float: "right",
         href: "https://x.com/VitalikButerin/status/2024523896360464791",
       },
       {
