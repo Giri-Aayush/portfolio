@@ -114,8 +114,8 @@ export function Hero() {
             >
               Senior Developer Relations Engineer at Nethermind. 5+ years
               shipping SDKs, developer tooling, and protocol integrations
-              across EVM and non-EVM ecosystems. I close the gap between
-              complex protocols and the developers building on top of them.
+              across EVM and non-EVM chains. I close the gap between complex
+              protocols and the developers building on top of them.
             </p>
             <div className="social-bar">
               <a

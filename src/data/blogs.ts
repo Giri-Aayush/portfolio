@@ -1120,7 +1120,7 @@ const blogsRaw: Blog[] = [
         text: [
           "The ossification camp argues that Bitcoin's consensus rules are load-bearing because they have not changed. Luke Dashjr held this position while he was a BIP editor and declined to number OP_CAT for months on the grounds of insufficient broad support. The counter, ",
           { text: "made publicly by Andrew Poelstra among others", href: "https://bitcoinmagazine.com/technical/op-cat-poelstra-ossification" },
-          ", is that Bitcoin has already evolved through Ordinals and inscriptions without a single consensus change, so the ossification argument is defending a position the ecosystem has already left.",
+          ", is that Bitcoin has already evolved through Ordinals and inscriptions without a single consensus change, so the ossification argument is defending a position the network has already left.",
         ],
       },
       {
