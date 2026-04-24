@@ -40,6 +40,193 @@ const LOREM_PARAGRAPH_D =
 
 const blogsRaw: Blog[] = [
   {
+    slug: "erc-8004-agents-onchain",
+    date: "27.04.26",
+    readTime: "10 MIN READ",
+    title: "ERC-8004: The Standard That Decides Whether AI Agents on Chain Is Real.",
+    description:
+      "Draft EIP created August 13, 2025. Audited contracts live on 20+ networks January 29, 2026. About 20,000 agents on the Identity Registry. The spec is good. The next twelve months decide whether that matters.",
+    status: "published",
+    content: [
+      {
+        type: "paragraph",
+        text: "ERC-8004 was filed as a draft EIP on August 13, 2025. It was posted to the Ethereum Magicians forum the next day, by davidecrapis.eth. On September 15, the Ethereum Foundation announced a new dAI team with ERC-8004 as its first deliverable. On November 21, 2025, 80 teams showed up to Trustless Agents Day at La Rural in Buenos Aires. On January 29, 2026, audited reference contracts went live on Ethereum mainnet at a deterministic CREATE2 address, replicated on Base, BNB Chain, Mantle, Polygon, Avalanche, Taiko, and more than a dozen other chains. The Identity Registry holds about twenty thousand agents today.",
+      },
+      {
+        type: "paragraph",
+        text: "Pick any other EIP filed in 2025 and compare those timestamps. This one moved unusually fast, with unusually coordinated backing, for an unusually broad audience. It still might not matter.",
+      },
+      {
+        type: "paragraph",
+        text: "The authors on the spec are Marco De Rossi (MetaMask), Davide Crapis (Ethereum Foundation), Jordan Ellis (Google), and Erik Reppel (Coinbase). That four-org author list is the interesting artifact. Crypto standards are usually written by crypto people. This one was written by the two biggest wallet companies, the Ethereum Foundation, and the firm whose Agent2Agent protocol ERC-8004 explicitly extends. Whether that breadth survives contact with actual usage is the question the next twelve months answer.",
+      },
+      {
+        type: "heading",
+        text: "What the Spec Actually Ships",
+      },
+      {
+        type: "paragraph",
+        text: "ERC-8004 defines three on-chain registries. That is the entire protocol surface. Everything else is off-chain.",
+      },
+      {
+        type: "list",
+        items: [
+          "Identity Registry. ERC-721 tokens with URIStorage. Each agent has an NFT whose URI points to an off-chain registration file. The file lists the agent's service endpoints (A2A, MCP, or anything else), supported payment schemes, and the trust models the agent honors. Minting an identity is permissionless. Naming is not enforced by the protocol.",
+          "Reputation Registry. A log of client feedback events, with tags and optional links to off-chain evidence. Aggregation and scoring are deliberately left to indexers and applications. The spec does not define \"the reputation score\" of an agent. It defines how feedback gets attested onchain so that anyone can aggregate it however they want.",
+          "Validation Registry. Hooks for independent validators to request, verify, and record checks on agent work. Pluggable trust models, from cheap reputation signals to stake-secured re-execution to TEE attestations. This is the registry still under active revision with the TEE community as of spring 2026.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "The status of the spec itself is still Draft. The contracts shipped on mainnet are audited and final. Those two sentences coexist because the EIP editorial process and the implementation readiness are separate things. Cyfrin, Nethermind, and the Ethereum Foundation have all audited the Identity and Reputation contracts. The address 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 is the same on every chain the registries deploy to, by design.",
+      },
+      {
+        type: "heading",
+        text: "The Catalyst Was Google, Not Crypto",
+      },
+      {
+        type: "paragraph",
+        text: "In June 2025, Google donated its Agent2Agent protocol to the Linux Foundation. A2A is HTTP, SSE, and JSON-RPC. It is a perfectly reasonable way for agents inside an organization to talk to each other. Marco De Rossi read the spec, noticed that it assumed mutual trust between agent operators, and realized the decentralized case was entirely undefined. A2A was written by Google for Google's customers. Agents across organizational boundaries, with no prior trust, needed something else.",
+      },
+      {
+        type: "paragraph",
+        text: "That something else is ERC-8004. It sits on top of A2A as a trust layer. The agent registration file ERC-8004 points to is a superset of what A2A already specifies. If your agent speaks A2A, your ERC-8004 registration adds an onchain identity, a log of past interactions, and a way for third parties to verify work claims. If it speaks MCP instead, the registration file names MCP endpoints. The protocol is agnostic about which off-chain stack you use.",
+      },
+      {
+        type: "paragraph",
+        text: "Payments are similarly delegated. x402 is Coinbase's revival of HTTP 402, the payment-required status code from RFC 2616 that browsers have ignored since 1999. In 2024 Coinbase published a spec for it, and in 2025 Google extended its Agent Payments Protocol (AP2) with an A2A x402 extension so agents could pay for services with USDC. ERC-8004 references x402 as an optional payment proof format in its feedback records. The registry does not process payments. It records that a payment happened, if you want to record it.",
+      },
+      {
+        type: "paragraph",
+        text: "None of this is invention. ERC-8004 is carefully minimal, and the minimal design is why it got four-company sign-off. It is also why it can fail. A standard that defines only identity, a feedback log, and a validation hook is extremely easy to route around, because any application can replace any of those layers with its own.",
+      },
+      {
+        type: "heading",
+        text: "The Numbers Match the Marketing Carefully",
+      },
+      {
+        type: "paragraph",
+        text: "Three different live dashboards count agents. They give three different numbers.",
+      },
+      {
+        type: "code",
+        language: "agent count by source",
+        text: "# geterc8004.com (official Identity Registry dashboard)\nregistered agents          = ~20,000\ndeployed networks          = 7+\nprojects building          = 70+\n\n# Agent Arena (third-party indexer)\nregistered agents          = ~22,000\nchains indexed             = 16 EVM + Solana\n\n# 8k4 Protocol (third-party indexer)\nindexed agents (total)     = ~107,000\n  Base                     = ~34,000\n  BNB Chain                = ~44,000\n  Ethereum mainnet         = ~29,000",
+      },
+      {
+        type: "paragraph",
+        text: "The canonical number is the Identity Registry's own count (around 20,000), because that is the one every ERC-8004 consumer reads from the same contract. The larger indexer numbers include agents that are either duplicate registrations, cross-chain replicas, or protocol-adjacent identities that predate the standard. Both are real. Neither tells you how many of those agents are doing anything.",
+      },
+      {
+        type: "paragraph",
+        text: "That second number is the one nobody publishes. If you search the Reputation Registry for \"agents that have received at least one piece of client feedback in the last thirty days,\" the count is small. The single cited data point that keeps getting repeated is that ORIGIN Protocol verified the first ERC-8004 agent on March 4, 2026, with a score of 89 out of 100. One agent, by one validator, with one score. It is a milestone because it is the first. It is also the shape of the numbers in spring 2026.",
+      },
+      {
+        type: "heading",
+        text: "What the Peer Review Actually Said",
+      },
+      {
+        type: "paragraph",
+        text: "The Magicians thread has over a hundred replies. The useful ones cluster into four objections, all of which are worth reading before you ship an ERC-8004 application.",
+      },
+      {
+        type: "list",
+        items: [
+          "Spengrah: the spec prioritizes off-chain reads via events over on-chain functions, which means smart contracts cannot directly consume validation results. Validation is decoupled from enforcement. If a DeFi protocol wants to reject trades from agents that failed validation, it has to read an off-chain aggregator, not the registry.",
+          "Daniel-ospina: aggregating feedback into a single reputation score is structurally dangerous. It encourages monopolistic aggregators, and the best systems (App Store reviews, Trustpilot, academic citations) all preserve feedback modularity. The spec leaves aggregation off-chain, which helps, but the expectation of a single score has already shown up in every third-party tool built on top.",
+          "Pcarranzav: domain-based identity is too restrictive and unclear on verification. A2A supports multiple agents per URL; the initial ERC-8004 draft flattened that. This has since been softened but the tension is unresolved.",
+          "comeToThinkOfEth and azanux: the spec lacks payment escrow, gas-cost management for agent-to-agent calls, and any explicit settlement pattern. \"Hooks for validators\" is not the same thing as \"a way to pay validators reliably.\" The escrow layer is not in scope and has not yet appeared in a sibling EIP.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "None of these are fatal. They are the criticism a spec gets when it is close enough to shipping that reviewers take it seriously. A spec nobody critiques is a spec nobody is considering using.",
+      },
+      {
+        type: "heading",
+        text: "The Twelve-Month Test",
+      },
+      {
+        type: "paragraph",
+        text: "The case for ERC-8004 is that agents need a common identity layer or the agent economy forks into proprietary silos like chatbot platforms did in 2023. The case against is that crypto standards routinely ship and languish because the developers who would adopt them are busy writing the same primitives into their own protocols.",
+      },
+      {
+        type: "paragraph",
+        text: "Virtuals Protocol is the cleanest test case. Virtuals runs the largest AI agent economy on Base (18,000+ agents by its own count). In March 2026, Virtuals co-developed ERC-8183, a sibling standard for agent commerce, with the Ethereum Foundation's dAI team. That is the pattern worth watching. If Virtuals routes its agent identity through ERC-8004 rather than its own registry, the standard has a network effect. If Virtuals keeps its own system and publishes adapters, the standard is documentation, not infrastructure.",
+      },
+      {
+        type: "paragraph",
+        text: "The same question applies to Coinbase (whose CDP platform has its own agent SDK), Google (whose AP2 extension nominally uses ERC-8004 but has its own parallel identity primitives), and the Virtuals imitators launching on Base every month. Four authors from four companies signed the spec. The test is whether those four companies, plus the dozens of teams not on the spec, treat 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 as authoritative.",
+      },
+      {
+        type: "paragraph",
+        text: "The other test is usage on the Validation Registry. Identity without validation is a directory. Validation without enforcement is a review site. The value of ERC-8004 comes from the combination: agents that can prove who they are, point to logged feedback, and attach verifiable claims about what they did. Today two of the three registries are live and audited; the third is still being negotiated with the TEE community. When that lands, and when the first application rejects an agent onchain because its validation attestation is missing, the standard will have crossed a line it has not crossed yet.",
+      },
+      {
+        type: "heading",
+        text: "Who Should Care, and Why",
+      },
+      {
+        type: "paragraph",
+        text: "If you build agent infrastructure, treat ERC-8004 as the default identity layer and build a soft dependency. The spec is minimal enough that adopting it costs you very little, and the network effect if it wins is large. Do not build your own identity registry unless you have a reason the four-author registry cannot solve.",
+      },
+      {
+        type: "paragraph",
+        text: "If you build DeFi, the relevant registry is Reputation. There is no onchain function that returns \"agent X's score.\" You have to index feedback events and decide for yourself what signal matters. Build the indexer or pay someone to run one. If you rely on a single third-party aggregator, you have re-introduced the centralized trust problem ERC-8004 was supposed to avoid.",
+      },
+      {
+        type: "paragraph",
+        text: "If you build wallets, ERC-8004 identity is the only permissionless way to answer \"is the thing calling my contract an agent, and if so whose?\" without trusting a specific platform. The UX for \"this transaction is being proposed by an agent on behalf of User Y\" depends on a standard both the user's wallet and the counterparty recognize. There are not many candidates. There is basically one.",
+      },
+      {
+        type: "paragraph",
+        text: "If you invest in agent tokens, remember that 20,000 registered identities is not 20,000 businesses. It is 20,000 deployed contracts that minted NFTs. The distribution of activity inside that set follows the same curve every crypto-native registry has produced since CryptoKitties.",
+      },
+      {
+        type: "heading",
+        text: "How the Pieces Fit",
+      },
+      {
+        type: "paragraph",
+        text: "ERC-8004 is the cleanest crypto standard of 2025. Four companies, four authors, three registries, one deployed address, one-page abstract. The spec is good and the audits are real and the deployment is broad. The adoption signal is real and the agent count is real and the corporate alignment is unusually real. None of that makes the \"agent economy\" a real category. That depends on agents doing things that produce value for humans without failing in the ways current agents fail, and ERC-8004 does not fix that problem. It is not trying to.",
+      },
+      {
+        type: "paragraph",
+        text: "What it is trying to do is make sure that when agents start doing useful things, the infrastructure underneath them is shared rather than siloed. That is a narrower claim, and a defensible one. The verdict I would offer in spring 2026 is that the spec is good, the adoption gap is the problem, and what Virtuals, Coinbase, MetaMask, Google, and the next Virtuals-scale platform actually do matters more than what the spec text says.",
+      },
+      {
+        type: "paragraph",
+        text: "If by April 2027 the four-author registry is what every serious agent platform reads from, ERC-8004 is infrastructure. If by April 2027 every serious platform has forked it or ignored it, ERC-8004 is documentation. There are not many other outcomes.",
+      },
+      {
+        type: "heading",
+        text: "References",
+      },
+      {
+        type: "references",
+        items: [
+          { label: "ERC-8004: Trustless Agents (spec)", url: "https://eips.ethereum.org/EIPS/eip-8004" },
+          { label: "ERC-8004 Ethereum Magicians discussion", url: "https://ethereum-magicians.org/t/erc-8004-trustless-agents/25098" },
+          { label: "Marco De Rossi: The Story Behind ERC-8004 & Next Steps", url: "https://medium.com/survival-tech/the-story-behind-erc-8004-next-steps-ec46c18d1879" },
+          { label: "Davide Crapis on X: dAI team announcement", url: "https://x.com/DavideCrapis/status/1967573374911340975" },
+          { label: "EF dAI team coverage, The Block", url: "https://www.theblock.co/post/370660/ethereum-foundation-forms-dai-team-to-make-ethereum-a-base-layer-for-the-ai-economy" },
+          { label: "Trustless Agents Day, Devconnect Buenos Aires (Luma)", url: "https://luma.com/i1vu0n7p" },
+          { label: "Google Agent2Agent protocol (A2A)", url: "https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/" },
+          { label: "Google AP2 + A2A x402 extension announcement", url: "https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol" },
+          { label: "Coinbase x402 (HTTP 402 for AI agents)", url: "https://www.x402.org/" },
+          { label: "Reference implementation: erc-8004/erc-8004-contracts", url: "https://github.com/erc-8004" },
+          { label: "awesome-erc8004 (curated resources)", url: "https://github.com/sudeepb02/awesome-erc8004" },
+          { label: "geterc8004.com (official registry dashboard)", url: "https://www.geterc8004.com/" },
+          { label: "CoinDesk: ERC-8004 aims to put identity and trust behind AI agents", url: "https://www.coindesk.com/markets/2026/01/28/ethereum-s-erc-8004-aims-to-put-identity-and-trust-behind-ai-agents" },
+          { label: "Mantle deploys ERC-8004 (Chainwire, Feb 2026)", url: "https://chainwire.org/2026/02/16/mantle-unlocks-autonomous-economy-with-erc-8004-deployment/" },
+          { label: "RentAHuman inflection (The Meridiem, Feb 2026)", url: "https://www.themeridiem.com/ai/2026/2/12/rentahuman-inflection-exposes-agent-economy-gap-between-hype-and-execution" },
+          { label: "Ensemble / ERC-8004 SDK", url: "https://github.com/ensemble-codes" },
+          { label: "Virtuals Protocol (agents on Base)", url: "https://app.virtuals.io/" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "statelessness-final-frontier",
     date: "25.04.26",
     readTime: "11 MIN READ",
