@@ -23,13 +23,15 @@ export function Navbar() {
 
   return (
     <nav className={`nav-bar ${scrolled ? "scrolled" : ""}`}>
-      <div
-        className="font-mono text-[13px]"
+      <Link
+        href="/"
+        aria-label="Home"
+        className="font-mono text-[13px] transition-colors hover:text-[var(--cyan)]"
         style={{ color: "var(--fg-2)" }}
       >
         ~ / <span style={{ color: "var(--fg)" }}>aayush</span>
         <span style={{ color: "var(--fg-4)" }}> — portfolio</span>
-      </div>
+      </Link>
       <div className="hidden md:flex gap-[2px] text-[13px]">
         {navLinks.map((l) => (
           <Link
