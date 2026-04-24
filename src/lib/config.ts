@@ -69,19 +69,22 @@ export const config = {
       event: "ETHGlobal Taipei 2025",
       result: "WINNER",
       track: "Celo Tooling Track",
-      description: "Built MCP framework for Celo ecosystem",
+      description:
+        "MCP server bridging Celo on-chain data to Claude and Cursor.",
     },
     {
       event: "ETHGlobal Prague 2025",
       result: "RUNNER-UP",
       track: "1inch Track",
-      description: "Developed VectorPlus DeFi optimization solution",
+      description:
+        "On-chain options on 1inch execution rights; MEV-resistant TWAP.",
     },
     {
       event: "ETHGlobal Tokyo 2023",
       result: "WINNER",
       track: "Best Innovation Award",
-      description: "Secured prizes from Bunzz, Polygon, and Scroll",
+      description:
+        "Prize-winner across three tracks: Bunzz, Polygon, and Scroll.",
     },
   ],
 
