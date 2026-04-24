@@ -109,6 +109,16 @@ export const config = {
   // Ordered by creation date, latest first
   ossProjects: [
     {
+      icon: "⛊",
+      name: "zkp-authentication",
+      repo: "zkp-authentication",
+      description:
+        "Chaum-Pedersen ZKP authentication over gRPC in Rust. Authenticate without ever transmitting a password.",
+      language: "Rust",
+      langColor: "#dea584",
+      stars: 11,
+    },
+    {
       icon: "◈",
       name: "nitroguard",
       repo: "nitroguard",
@@ -137,6 +147,16 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
+    },
+    {
+      icon: "◊",
+      name: "Optix",
+      repo: "hackmoney-2026",
+      description:
+        "Gasless ETH options protocol on Yellow Network state channels. Black-Scholes pricing, off-chain execution, on-chain custody. ETHGlobal HackMoney 2026.",
+      language: "TypeScript",
+      langColor: "#3178c6",
+      stars: 1,
     },
     {
       icon: "⌘",
@@ -187,16 +207,6 @@ export const config = {
       language: "JavaScript",
       langColor: "#f1e05a",
       stars: 1,
-    },
-    {
-      icon: "⛊",
-      name: "zkp-authentication",
-      repo: "zkp-authentication",
-      description:
-        "Chaum-Pedersen ZKP authentication over gRPC in Rust. Authenticate without ever transmitting a password.",
-      language: "Rust",
-      langColor: "#dea584",
-      stars: 11,
     },
   ],
 };
