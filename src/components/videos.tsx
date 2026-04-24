@@ -39,7 +39,7 @@ export function Videos() {
       <div className="wrap">
         <div className="sec-head reveal">
           <div>
-            <div className="seclabel">Videos &amp; talks</div>
+            <div className="seclabel">Videos</div>
             <h2 className="display">
               Things I said
               <br />

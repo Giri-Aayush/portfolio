@@ -56,8 +56,8 @@ export default function Home() {
         <Hero />
         <Experience />
         <Projects />
-        <Writing />
         <Videos />
+        <Writing />
         <Contact />
       </main>
       <ThemeToggle />

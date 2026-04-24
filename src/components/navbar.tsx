@@ -7,8 +7,8 @@ import { Icon } from "./icons";
 const navLinks = [
   { label: "Experience", href: "/#experience" },
   { label: "Projects", href: "/#projects" },
-  { label: "Writing", href: "/blogs" },
   { label: "Videos", href: "/#videos" },
+  { label: "Writing", href: "/blogs" },
 ];
 
 export function Navbar() {
