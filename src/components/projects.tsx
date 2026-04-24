@@ -1,5 +1,6 @@
 import { config } from "@/lib/config";
 import { Icon } from "./icons";
+import { ProjectThumb } from "./project-thumb";
 
 const gradients = [
   "gradient-1",
@@ -59,29 +60,18 @@ export function Projects() {
                 <div
                   className={`tile-preview ${gradients[i % gradients.length]} flex-1 mb-4 relative`}
                 >
-                  {big && (
-                    <div
-                      className="absolute inset-6 rounded-[14px] p-3.5"
-                      style={{
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        background: "rgba(0,0,0,0.35)",
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 10,
-                        color: "rgba(255,255,255,0.6)",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      <div style={{ color: "var(--cyan)" }}>
-                        // {p.name} — usage
-                      </div>
-                      <div>$ npm install {p.name}</div>
-                      <div style={{ opacity: 0.7 }}>
-                        ✓ resolved 0 vulnerabilities
-                      </div>
-                      <div>$ {p.name} --help</div>
-                      <div style={{ opacity: 0.7 }}>Ready.</div>
-                    </div>
-                  )}
+                  <ProjectThumb
+                    big={big}
+                    mockType={"mockType" in p ? p.mockType : undefined}
+                    mockHeader={"mockHeader" in p ? p.mockHeader : undefined}
+                    mock={"mock" in p ? p.mock : undefined}
+                    mockMethod={"mockMethod" in p ? p.mockMethod : undefined}
+                    mockEndpoint={"mockEndpoint" in p ? p.mockEndpoint : undefined}
+                    mockFeed={"mockFeed" in p ? p.mockFeed : undefined}
+                    mockLogs={"mockLogs" in p ? p.mockLogs : undefined}
+                    mockLabel={"mockLabel" in p ? p.mockLabel : undefined}
+                    mockValue={"mockValue" in p ? p.mockValue : undefined}
+                  />
                   {p.tag && (
                     <span
                       className="pill cyan absolute top-4 left-4"

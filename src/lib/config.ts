@@ -117,6 +117,9 @@ export const config = {
       language: "Rust",
       langColor: "#dea584",
       stars: 11,
+      mockType: "terminal" as const,
+      mockHeader: "zkp-auth — zsh",
+      mock: "$ zkp-auth register alice\n→ generating commitment…\n✓ keypair saved\n$ zkp-auth login alice\n✓ proof verified · session open",
     },
     {
       icon: "◈",
@@ -128,6 +131,9 @@ export const config = {
       langColor: "#3178c6",
       stars: 0,
       tag: "OSS",
+      mockType: "code" as const,
+      mockHeader: "channel.ts",
+      mock: "import { open } from 'nitroguard'\n\nconst ch = await open({\n  asset: 'usdc',\n  deposit: 100n,\n})\n\nch.send({ to, amount })",
     },
     {
       icon: "⊞",
@@ -139,6 +145,9 @@ export const config = {
       langColor: "#3178c6",
       stars: 2,
       tag: "OSS",
+      mockType: "code" as const,
+      mockHeader: "upload.ts",
+      mock: "const url = await oort.put(\n  'images/avatar.png',\n  stream,\n  { acl: 'public' }\n)",
     },
     {
       icon: "⎔",
@@ -149,6 +158,10 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
+      mockType: "api" as const,
+      mockMethod: "POST",
+      mockEndpoint: "/drip",
+      mock: "{\n  \"address\": \"0xabcd…ef\",\n  \"amount\": 10,\n  \"status\": \"queued\"\n}",
     },
     {
       icon: "⬡",
@@ -159,6 +172,13 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
+      mockType: "feed" as const,
+      mockFeed: [
+        { date: "04.25", text: "EIP-8141 CFI granted · Hegotá" },
+        { date: "04.24", text: "Celestia v2 devnet live" },
+        { date: "04.23", text: "Starknet v0.14 upgrade shipped" },
+        { date: "04.22", text: "Aztec testnet public beta" },
+      ],
     },
     {
       icon: "◊",
@@ -169,6 +189,9 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 1,
+      mockType: "chart" as const,
+      mockLabel: "ETH CALL · 4K strike",
+      mockValue: "+0.42 Δ",
     },
     {
       icon: "⌘",
@@ -179,6 +202,9 @@ export const config = {
       language: "Go",
       langColor: "#00ADD8",
       stars: 2,
+      mockType: "terminal" as const,
+      mockHeader: "faucet — zsh",
+      mock: "$ faucet request --net sepolia\n→ solving PoW challenge…\n✓ sent 0.1 ETH → 0xab…ef\n$ _",
     },
     {
       icon: "▶",
@@ -189,6 +215,9 @@ export const config = {
       language: "Solidity",
       langColor: "#AA6746",
       stars: 0,
+      mockType: "chart" as const,
+      mockLabel: "TWAP · 10m window",
+      mockValue: "slippage 0.12%",
     },
     {
       icon: "◇",
@@ -199,6 +228,10 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
+      mockType: "api" as const,
+      mockMethod: "TOOL",
+      mockEndpoint: "starknet.getBalance",
+      mock: "{\n  \"address\": \"0xab…ef\",\n  \"balance\": \"1.24 STRK\",\n  \"block\": 912_304\n}",
     },
     {
       icon: "◉",
@@ -209,6 +242,13 @@ export const config = {
       language: "JavaScript",
       langColor: "#f1e05a",
       stars: 1,
+      mockType: "log" as const,
+      mockLogs: [
+        { time: "08:42", level: "INFO", text: "server ready" },
+        { time: "08:43", level: "WARN", text: "slow query 1.4s" },
+        { time: "08:44", level: "INFO", text: "serving on :3000" },
+        { time: "08:45", level: "ERROR", text: "upstream timeout" },
+      ],
     },
   ],
 };

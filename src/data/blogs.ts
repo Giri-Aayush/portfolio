@@ -1078,7 +1078,7 @@ const blogsRaw: Blog[] = [
       { type: "heading", text: "Nitrolite" },
       {
         type: "paragraph",
-        text: "Nitrolite is the reference implementation of ERC-7824. The repo describes itself as a simplified version of Nitro for prototyping state-channel applications. Solidity custody contracts. TypeScript SDK. Go client. ClearNode server. An interactive REPL called Cerebro. The TypeScript SDK first landed on npm on April 2, 2025 as @erc7824/nitrolite, shipped through 0.x up to 0.5.3 in December 2025, and migrated to @yellow-org/sdk at v1.0 on March 8, 2026 — the same day as the YELLOW TGE. A @yellow-org/sdk-compat package exists as a migration layer. Repo is under the erc7824 and layer-3 GitHub orgs.",
+        text: "Nitrolite is the reference implementation of ERC-7824. The repo describes itself as a simplified version of Nitro for prototyping state-channel applications. Solidity custody contracts. TypeScript SDK. Go client. ClearNode server. An interactive REPL called Cerebro. The TypeScript SDK first landed on npm on April 2, 2025 as @erc7824/nitrolite, shipped through 0.x up to 0.5.3 in December 2025, and migrated to @yellow-org/sdk on March 2, 2026, with v1.2.0 shipping on YELLOW TGE day (March 8). A @yellow-org/sdk-compat package exists as a migration layer. Repo is under the erc7824 and layer-3 GitHub orgs.",
       },
       {
         type: "paragraph",
