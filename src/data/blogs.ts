@@ -422,7 +422,7 @@ const blogsRaw: Blog[] = [
   },
   {
     slug: "statelessness-final-frontier",
-    date: "25.04.26",
+    date: "15.03.26",
     readTime: "11 MIN READ",
     title: "Statelessness: The Final Frontier of Decentralization.",
     description:
