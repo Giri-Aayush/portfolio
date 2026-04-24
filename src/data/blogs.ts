@@ -167,19 +167,19 @@ const blogsRaw: Blog[] = [
         text: "What I Actually Migrated",
       },
       {
+        type: "image",
+        src: "/blogs/karpathy-killed-my-rag-pipeline/obsidian-graph-view.png",
+        alt: "Obsidian graph view of the LLM-maintained wiki: nodes for concepts, tools, people, and sources connected by back-links.",
+        caption: "The same wiki in Obsidian's graph view. Every node is a markdown file the LLM wrote; every edge is a back-link it maintained.",
+        float: "right",
+      },
+      {
         type: "paragraph",
         text: "I ran a personal research vault on roughly 90,000 words across 60-ish documents. It was embedded with text-embedding-3-small, stored in a small pgvector table, chunked at 512 tokens with 128 overlap, retrieved top-5. The retrieval was fine. The answers were fine. The cost per query was the part that bothered me, because re-embedding on source update and maintaining the chunker were carrying real ops overhead.",
       },
       {
         type: "paragraph",
         text: "I deleted the embedding pipeline and the vector table. I moved the source documents to raw/. I pointed Claude Code at the folder with a CLAUDE.md describing the vault and asked it to generate wiki/ from scratch. It took about fourteen minutes on the first ingest and produced sixty-three wiki articles plus an index. Query cost dropped to what Claude Code normally costs when it opens three or four files to answer a question. Answer quality improved because the wiki articles resolve their own ambiguity with back-links, which ranked chunks never did.",
-      },
-      {
-        type: "image",
-        src: "/blogs/karpathy-killed-my-rag-pipeline/obsidian-graph-view.png",
-        alt: "Obsidian graph view of the LLM-maintained wiki: nodes for concepts, tools, people, and sources connected by back-links.",
-        caption: "The same wiki in Obsidian's graph view. Every node is a markdown file the LLM wrote; every edge is a back-link it maintained.",
-        float: "right",
       },
       {
         type: "paragraph",
