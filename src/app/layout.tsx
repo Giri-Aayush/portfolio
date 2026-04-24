@@ -58,21 +58,12 @@ export const metadata: Metadata = {
     title,
     description,
     siteName: "Aayush Giri",
-    images: [
-      {
-        url: "/profile.png",
-        width: 1024,
-        height: 1024,
-        alt: "Aayush Giri - Senior DevRel Engineer",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
     creator: "@AayushStack",
-    images: ["/profile.png"],
   },
   robots: {
     index: true,
