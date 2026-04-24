@@ -26,7 +26,7 @@ export function Contact() {
             className="btn btn-cyan"
             style={{ padding: "16px 26px", fontSize: 16 }}
           >
-            aayushgiri1234@gmail.com <Icon.arrow />
+            aayushgiri1234@gmail.com <span className="btn-arrow"><Icon.arrow /></span>
           </a>
           <a
             href="https://cal.com/aayush-giri/quicksync"
@@ -35,7 +35,7 @@ export function Contact() {
             className="btn"
             style={{ padding: "16px 26px", fontSize: 16 }}
           >
-            Book a 20-min call →
+            Book a 20-min call <span className="btn-arrow">→</span>
           </a>
         </div>
       </div>
@@ -72,14 +72,6 @@ export function Contact() {
                 className="hover:text-[var(--cyan)] transition-colors"
               >
                 LinkedIn ↗
-              </a>
-              <a
-                href="https://youtube.com/@AayushStack"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[var(--cyan)] transition-colors"
-              >
-                YouTube ↗
               </a>
             </div>
             <div className="mono">v4.0 · hand-built</div>

@@ -147,15 +147,6 @@ export function Hero() {
               </a>
               <a
                 className="social-btn"
-                href="https://youtube.com/@AayushStack"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-              >
-                <Icon.yt />
-              </a>
-              <a
-                className="social-btn"
                 href="mailto:aayushgiri1234@gmail.com"
                 aria-label="Email"
               >

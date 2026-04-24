@@ -242,7 +242,10 @@ html.light .pill {
 }
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background: var(--cyan-soft);
+  border-color: var(--cyan-border);
+  color: var(--cyan);
+  box-shadow: 0 8px 20px var(--cyan-soft);
 }
 .btn-cyan {
   background: var(--cyan-soft);
@@ -252,6 +255,14 @@ html.light .pill {
 .btn-cyan:hover {
   background: color-mix(in oklch, var(--cyan) 20%, var(--cyan-soft));
   box-shadow: 0 8px 24px var(--cyan-glow);
+}
+.btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.35s var(--ease);
+}
+.btn:hover .btn-arrow {
+  transform: translateX(4px);
 }
 .btn-primary {
   background: var(--fg);
@@ -325,7 +336,8 @@ html.light .card.glass {
   backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
   box-shadow: var(--shadow-md);
-  transition: all 0.4s var(--ease);
+  transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease),
+    background 0.4s var(--ease);
 }
 .nav-bar.scrolled {
   background: color-mix(in oklch, var(--surface) 92%, transparent);
@@ -338,6 +350,44 @@ html.light .nav-bar {
 html.light .nav-bar.scrolled {
   background: color-mix(in oklch, #ffffff 94%, transparent);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* Nav reacts when the CTA is hovered */
+.nav-bar:has(.nav-cta:hover) {
+  border-color: var(--cyan-border);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--cyan-border),
+    0 0 32px var(--cyan-soft);
+}
+
+/* Book a call CTA — matches prior clean look, with cyan hover */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+    color 0.3s var(--ease), transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+.nav-cta svg {
+  transition: transform 0.4s var(--ease);
+}
+.nav-cta:hover {
+  background: var(--cyan-soft);
+  border-color: var(--cyan-border);
+  color: var(--cyan);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px var(--cyan-soft);
+}
+.nav-cta:hover svg {
+  transform: rotate(-10deg) scale(1.08);
 }
 
 /* ─── Hero atoms ─── */

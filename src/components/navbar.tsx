@@ -46,12 +46,7 @@ export function Navbar() {
         href="https://cal.com/aayush-giri/quicksync"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-medium transition-all"
-        style={{
-          background: "var(--surface-2)",
-          border: "1px solid var(--border)",
-          fontFamily: "var(--font-display)",
-        }}
+        className="nav-cta"
       >
         <Icon.mail />
         <span>Book a call</span>
