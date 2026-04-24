@@ -2,10 +2,29 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
-import { FloatingDock } from "@/components/floating-dock";
-import { Footer } from "@/components/footer";
-import { Fragment } from "react";
+import { Motion } from "@/components/motion";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { blogs, type ContentBlock, type RichText } from "@/data/blogs";
+
+function renderRich(text: RichText) {
+  if (typeof text === "string") return text;
+  return text.map((span, i) =>
+    typeof span === "string" ? (
+      <span key={i}>{span}</span>
+    ) : (
+      <a
+        key={i}
+        href={span.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="transition-colors hover:text-[var(--cyan)]"
+        style={{ color: "var(--cyan)" }}
+      >
+        {span.text}
+      </a>
+    )
+  );
+}
 
 type Params = { slug: string };
 
@@ -38,44 +57,43 @@ export async function generateMetadata({
   };
 }
 
-function renderRich(text: RichText) {
-  if (typeof text === "string") return text;
-  return text.map((span, i) =>
-    typeof span === "string" ? (
-      <Fragment key={i}>{span}</Fragment>
-    ) : (
-      <a
-        key={i}
-        href={span.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline underline-offset-4 decoration-outline-variant/60 hover:decoration-primary hover:text-primary transition-colors"
-      >
-        {span.text}
-      </a>
-    )
-  );
-}
-
 function Block({ block }: { block: ContentBlock }) {
   if (block.type === "heading") {
     return (
-      <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight uppercase mt-16 mb-6 clear-both">
+      <h2
+        className="mt-16 mb-6"
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(28px, 3.4vw, 36px)",
+          fontWeight: 600,
+          letterSpacing: "-0.025em",
+          lineHeight: 1.15,
+        }}
+      >
         {block.text}
       </h2>
     );
   }
   if (block.type === "paragraph") {
     return (
-      <p className="font-body text-lg text-on-surface leading-relaxed">
+      <p
+        className="leading-relaxed"
+        style={{ fontSize: 18, color: "var(--fg)" }}
+      >
         {renderRich(block.text)}
       </p>
     );
   }
   if (block.type === "quote") {
     return (
-      <blockquote className="border-l-2 border-primary pl-6 py-2 my-4">
-        <p className="font-body text-xl italic text-on-surface-variant leading-relaxed">
+      <blockquote
+        className="my-4 py-2 pl-6"
+        style={{ borderLeft: "2px solid var(--cyan)" }}
+      >
+        <p
+          className="italic leading-relaxed"
+          style={{ fontSize: 20, color: "var(--fg-2)" }}
+        >
           {block.text}
         </p>
       </blockquote>
@@ -83,10 +101,16 @@ function Block({ block }: { block: ContentBlock }) {
   }
   if (block.type === "list") {
     return (
-      <ul className="font-body text-lg text-on-surface space-y-3 list-none">
+      <ul
+        className="space-y-3 list-none pl-0"
+        style={{ fontSize: 18, color: "var(--fg)" }}
+      >
         {block.items.map((item, i) => (
           <li key={i} className="flex gap-4">
-            <span className="font-label text-secondary mt-1 text-xs">
+            <span
+              className="mono shrink-0 mt-1.5"
+              style={{ color: "var(--cyan)", fontSize: 11 }}
+            >
               {String(i + 1).padStart(2, "0")}
             </span>
             <span className="flex-1 leading-relaxed">{renderRich(item)}</span>
@@ -97,13 +121,35 @@ function Block({ block }: { block: ContentBlock }) {
   }
   if (block.type === "code") {
     return (
-      <div className="border border-outline-variant/30 bg-surface-container-low">
+      <div
+        className="overflow-hidden"
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--r-md)",
+        }}
+      >
         {block.language && (
-          <div className="font-label text-[10px] text-on-surface-variant tracking-[0.3em] uppercase border-b border-outline-variant/30 px-4 py-2">
+          <div
+            className="mono px-4 py-2"
+            style={{
+              borderBottom: "1px solid var(--border)",
+              fontSize: 10,
+              color: "var(--fg-3)",
+            }}
+          >
             {block.language}
           </div>
         )}
-        <pre className="font-label text-sm text-on-surface overflow-x-auto p-4">
+        <pre
+          className="overflow-x-auto p-4 m-0"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 13,
+            color: "var(--fg)",
+            lineHeight: 1.7,
+          }}
+        >
           <code>{block.text}</code>
         </pre>
       </div>
@@ -111,15 +157,22 @@ function Block({ block }: { block: ContentBlock }) {
   }
   if (block.type === "image") {
     const figure = (
-      <figure className="my-4 md:float-right md:w-[45%] md:ml-8 md:mb-4 md:mt-2 max-w-full">
+      <figure className="my-6">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={block.src}
           alt={block.alt}
-          className="w-full border border-outline-variant/20"
+          className="w-full"
+          style={{
+            border: "1px solid var(--border)",
+            borderRadius: "var(--r-md)",
+          }}
         />
         {block.caption && (
-          <figcaption className="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.25em] mt-3 leading-relaxed">
+          <figcaption
+            className="mono mt-3"
+            style={{ color: "var(--fg-3)", fontSize: 11 }}
+          >
             {block.caption}
           </figcaption>
         )}
@@ -130,21 +183,9 @@ function Block({ block }: { block: ContentBlock }) {
         href={block.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="block hover:opacity-90 transition-opacity md:float-right md:w-[45%] md:ml-8 md:mb-4 md:mt-2 max-w-full my-4"
+        className="block transition-opacity hover:opacity-90"
       >
-        <figure>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={block.src}
-            alt={block.alt}
-            className="w-full border border-outline-variant/20"
-          />
-          {block.caption && (
-            <figcaption className="font-label text-[10px] text-on-surface-variant uppercase tracking-[0.25em] mt-3 leading-relaxed">
-              {block.caption}
-            </figcaption>
-          )}
-        </figure>
+        {figure}
       </a>
     ) : (
       figure
@@ -152,16 +193,21 @@ function Block({ block }: { block: ContentBlock }) {
   }
   if (block.type === "references") {
     return (
-      <ul className="font-label text-sm text-on-surface-variant space-y-2 list-none">
+      <ul className="list-none pl-0 space-y-2.5">
         {block.items.map((item, i) => (
           <li key={i}>
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
+              className="transition-colors hover:text-[var(--cyan)]"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 13,
+                color: "var(--fg-2)",
+              }}
             >
-              <span className="text-outline-variant mr-2">[↗]</span>
+              <span style={{ color: "var(--cyan)", marginRight: 8 }}>↗</span>
               {item.label}
             </a>
           </li>
@@ -206,90 +252,128 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar />
-      <main className="pt-24 pb-12">
-        <section className="px-8 mb-12">
-          <div className="editorial-grid">
-            <div className="col-span-12">
-              <Link
-                href="/blogs"
-                className="font-label text-[10px] tracking-[0.3em] uppercase text-on-surface-variant hover:text-primary transition-colors inline-block mb-12"
+      <main className="pt-32 pb-16">
+        <div className="wrap mb-10">
+          <Link
+            href="/blogs"
+            className="mono inline-block mb-10 transition-colors hover:text-[var(--cyan)]"
+            style={{ color: "var(--fg-3)" }}
+          >
+            ← All essays
+          </Link>
+
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 mb-6 flex-wrap">
+              <span
+                className="mono"
+                style={{ color: "var(--cyan)", letterSpacing: "0.08em" }}
               >
-                [←] ALL_BLOGS
-              </Link>
+                {blog.date}
+              </span>
+              <span className="pill">{blog.readTime}</span>
             </div>
-
-            <div className="col-span-12 md:col-span-10 md:col-start-2">
-              <div className="flex items-center gap-4 mb-6">
-                <span className="font-label text-xs text-secondary tracking-widest">
-                  {blog.date}
-                </span>
-                <span className="font-label text-[10px] text-on-surface-variant border border-outline-variant/30 px-2 py-0.5 uppercase">
-                  {blog.readTime}
-                </span>
-              </div>
-
-              <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-8">
-                {blog.title}
-              </h1>
-
-              <p className="font-body text-xl text-on-surface-variant max-w-3xl leading-relaxed">
-                {blog.description}
-              </p>
-            </div>
+            <h1
+              className="display mb-8"
+              style={{
+                fontSize: "clamp(40px, 6vw, 72px)",
+                lineHeight: 1.05,
+              }}
+            >
+              {blog.title}
+            </h1>
+            <p
+              className="leading-relaxed"
+              style={{
+                fontSize: 20,
+                color: "var(--fg-2)",
+              }}
+            >
+              {blog.description}
+            </p>
           </div>
-        </section>
+        </div>
 
-        <div className="h-px bg-outline-variant/20 mx-8 mb-16" />
+        <div
+          className="mx-8 mb-16"
+          style={{
+            height: 1,
+            background: "var(--border)",
+          }}
+        />
 
-        <article className="px-8 mb-24">
-          <div className="editorial-grid">
-            <div className="col-span-12 md:col-span-8 md:col-start-3 space-y-6">
-              {blog.content.map((block, i) => (
-                <Block key={i} block={block} />
-              ))}
-            </div>
+        <article className="wrap mb-24">
+          <div className="max-w-3xl mx-auto space-y-6">
+            {blog.content.map((block, i) => (
+              <Block key={i} block={block} />
+            ))}
           </div>
         </article>
 
-        <section className="px-8 mb-28">
-          <div className="editorial-grid">
-            <div className="col-span-12 md:col-span-10 md:col-start-2">
-              <div className="h-px bg-outline-variant/20 mb-10" />
-              <div className="flex flex-col md:flex-row justify-between gap-8">
-                {prev ? (
-                  <Link href={`/blogs/${prev.slug}`} className="group max-w-sm">
-                    <span className="font-label text-[10px] text-on-surface-variant tracking-[0.3em] uppercase block mb-2">
-                      [←] PREVIOUS
-                    </span>
-                    <span className="font-headline text-xl font-bold tracking-tight group-hover:text-primary transition-colors">
-                      {prev.title}
-                    </span>
-                  </Link>
-                ) : (
-                  <span />
-                )}
-                {next ? (
-                  <Link
-                    href={`/blogs/${next.slug}`}
-                    className="group max-w-sm md:text-right"
+        <section className="wrap mb-20">
+          <div className="max-w-3xl mx-auto">
+            <div
+              className="mb-8"
+              style={{ height: 1, background: "var(--border)" }}
+            />
+            <div className="flex flex-col md:flex-row justify-between gap-8">
+              {prev ? (
+                <Link
+                  href={`/blogs/${prev.slug}`}
+                  className="group max-w-sm"
+                >
+                  <div
+                    className="mono mb-2"
+                    style={{ color: "var(--fg-3)" }}
                   >
-                    <span className="font-label text-[10px] text-on-surface-variant tracking-[0.3em] uppercase block mb-2">
-                      NEXT [→]
-                    </span>
-                    <span className="font-headline text-xl font-bold tracking-tight group-hover:text-primary transition-colors">
-                      {next.title}
-                    </span>
-                  </Link>
-                ) : (
-                  <span />
-                )}
-              </div>
+                    ← Previous
+                  </div>
+                  <div
+                    className="transition-colors group-hover:text-[var(--cyan)]"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 20,
+                      fontWeight: 600,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {prev.title}
+                  </div>
+                </Link>
+              ) : (
+                <span />
+              )}
+              {next ? (
+                <Link
+                  href={`/blogs/${next.slug}`}
+                  className="group max-w-sm md:text-right"
+                >
+                  <div
+                    className="mono mb-2"
+                    style={{ color: "var(--fg-3)" }}
+                  >
+                    Next →
+                  </div>
+                  <div
+                    className="transition-colors group-hover:text-[var(--cyan)]"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 20,
+                      fontWeight: 600,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {next.title}
+                  </div>
+                </Link>
+              ) : (
+                <span />
+              )}
             </div>
           </div>
         </section>
       </main>
-      <FloatingDock />
-      <Footer />
+      <ThemeToggle />
+      <Motion />
     </>
   );
 }

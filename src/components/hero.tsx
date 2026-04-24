@@ -1,88 +1,233 @@
 import Image from "next/image";
+import { Icon } from "./icons";
+import { config } from "@/lib/config";
+import { getGitHubStats } from "@/lib/github";
 
-const tags = [
-  { label: "ETHEREUM_INFRA", color: "primary" },
-  { label: "ZERO_KNOWLEDGE", color: "secondary" },
-  { label: "SDK_TOOLING", color: "primary" },
-  { label: "AI_AGENTS", color: "secondary" },
-] as const;
+function formatNumber(n: number): string {
+  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  return n.toString();
+}
+
+const marqueeItems = [
+  "Ethereum",
+  "Zero-Knowledge",
+  "Starknet",
+  "Aztec",
+  "SDK Design",
+  "AI Agents",
+  "DevRel",
+  "Rust",
+  "TypeScript",
+  "Go",
+];
 
 export function Hero() {
-  return (
-    <section id="hero" className="px-8 mb-28">
-      <div className="editorial-grid">
-        {/* Image - hidden on mobile, shown on desktop left with blended edges */}
-        <div className="hidden md:block col-span-5 aspect-[4/5] relative overflow-hidden">
-          <Image
-            src="/profile.png"
-            alt="Profile"
-            width={800}
-            height={1000}
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-            priority
-          />
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_60px_30px_#0e0e0e]" />
-        </div>
+  const gh = getGitHubStats();
+  const totalPRs = gh.totalPRs + config.stats.extraPRs;
+  const totalCommits = gh.totalCommits + config.stats.extraCommits;
 
-        <div className="col-span-12 md:col-span-7 flex flex-col justify-center">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-3 h-3 bg-secondary shadow-[0_0_10px_#d2f000]" />
-            <span className="font-label text-xs text-on-surface-variant tracking-[0.2em]">
-              CURRENT_FOCUS
-            </span>
+  const stats: Array<[string, string]> = [
+    [`${config.stats.talksGiven}+`, "Talks"],
+    [formatNumber(totalPRs) + "+", "PRs"],
+    [formatNumber(totalCommits) + "+", "Commits"],
+    [`${config.stats.articlesPublished}+`, "Articles"],
+  ];
+
+  return (
+    <section id="hero" className="hero-ambient relative pt-[140px] pb-10">
+      <div className="wrap relative z-[1]">
+        <div className="grid gap-7 md:[grid-template-columns:1.1fr_1fr]">
+          {/* Portrait card */}
+          <div className="portrait-card reveal">
+            <div className="absolute top-6 left-6 z-[2]">
+              <span className="pill cyan">
+                <span className="dot" />
+                Available · May 2026
+              </span>
+            </div>
+            <div className="flex-1 rounded-[22px] relative overflow-hidden">
+              <Image
+                src="/profile.png"
+                alt="Aayush Giri"
+                fill
+                priority
+                sizes="(max-width: 960px) 100vw, 50vw"
+                className="object-cover"
+                style={{ filter: "grayscale(1) contrast(1.02)" }}
+              />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.55))",
+                }}
+              />
+            </div>
+            <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end z-[2]">
+              <div>
+                <div
+                  className="mono mb-1"
+                  style={{ color: "rgba(255,255,255,0.55)" }}
+                >
+                  01 — Intro
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 28,
+                    fontWeight: 600,
+                    color: "#fff",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  Aayush Giri
+                </div>
+              </div>
+              <div
+                className="mono text-right"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                Kathmandu
+                <br />
+                Remote · Global
+              </div>
+            </div>
           </div>
 
-          <h1 className="font-headline text-5xl md:text-8xl font-bold tracking-tighter leading-none mb-8">
-            BUILDING <span className="text-primary italic">DEVEX</span>
-            <br />
-            FOR THE OPEN WEB.
-          </h1>
-
-          <p className="font-body text-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed">
-            Hi, I&apos;m Aayush Giri. I&apos;ve been building software for over
-            5 years across zero-knowledge cryptography, AI agent tooling,
-            developer tooling, blockchain infrastructure, and full-stack
-            development. I also specialize in high-impact developer relations
-            and technical education, with a deep focus on closing the gap
-            between complex protocols and the developers building on top of
-            them.
-          </p>
-
-          <div className="flex flex-wrap gap-3 mb-10">
-            {tags.map((tag) => (
-              <span
-                key={tag.label}
-                className={`font-label text-[10px] px-3 py-1 border uppercase tracking-widest ${
-                  tag.color === "primary"
-                    ? "border-primary/30 text-primary"
-                    : "border-secondary/30 text-secondary"
-                }`}
+          {/* Manifesto + stats */}
+          <div className="flex flex-col gap-5">
+            <div
+              className="card card-lg glass reveal d-1 p-10 flex flex-col gap-7"
+              style={{ flex: 1 }}
+            >
+              <div className="seclabel">Current focus</div>
+              <h1
+                className="display"
+                style={{ fontSize: "clamp(40px, 5vw, 64px)" }}
               >
-                {tag.label}
+                Building <span className="cyan-hl">DevEx</span>
+                <br />
+                for the open web.
+              </h1>
+              <p
+                className="m-0 leading-relaxed max-w-[480px]"
+                style={{
+                  color: "var(--fg-2)",
+                  fontSize: 16,
+                }}
+              >
+                Senior Developer Relations Engineer at Nethermind. 5+ years
+                building software across zero-knowledge cryptography, AI agent
+                tooling, and Ethereum infrastructure. I close the gap between
+                complex protocols and the developers building on top of them.
+              </p>
+              <div className="social-bar">
+                <a
+                  className="social-btn"
+                  href={`https://github.com/${config.github}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                >
+                  <Icon.gh />
+                </a>
+                <a
+                  className="social-btn"
+                  href="https://x.com/AayushStack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X"
+                >
+                  <Icon.x />
+                </a>
+                <a
+                  className="social-btn"
+                  href="https://www.linkedin.com/in/aayush-giri/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Icon.in />
+                </a>
+                <a
+                  className="social-btn"
+                  href="https://youtube.com/@AayushStack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                >
+                  <Icon.yt />
+                </a>
+                <a
+                  className="social-btn"
+                  href="mailto:aayushgiri1234@gmail.com"
+                  aria-label="Email"
+                >
+                  <Icon.mail />
+                </a>
+              </div>
+              <div className="flex gap-2.5 mt-1 flex-wrap">
+                <a
+                  href="https://cal.com/aayush-giri/quicksync"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-cyan"
+                >
+                  Let&apos;s connect <Icon.arrow />
+                </a>
+                <a href="#projects" className="btn">
+                  Selected work
+                </a>
+              </div>
+            </div>
+
+            <div
+              className="reveal d-2 grid grid-cols-2 md:grid-cols-4 gap-4 p-[22px]"
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-lg)",
+              }}
+            >
+              {stats.map(([n, l]) => (
+                <div key={l}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 28,
+                      fontWeight: 600,
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    {n}
+                  </div>
+                  <div
+                    className="mono mt-1"
+                    style={{ fontSize: 10 }}
+                  >
+                    {l}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="wrap">
+        <div className="marquee">
+          <div className="marquee-track">
+            {[0, 1].map((i) => (
+              <span key={i} className="flex gap-12">
+                {marqueeItems.map((item, j) => (
+                  <span key={`${i}-${j}`} className="flex gap-12 items-center">
+                    <span>{item}</span>
+                    <span className="sep">✦</span>
+                  </span>
+                ))}
               </span>
             ))}
           </div>
-
-          <a
-            href="https://cal.com/aayush-giri/quicksync"
-            className="font-label text-[10px] tracking-[0.3em] uppercase bg-primary text-surface px-6 py-3 hover:bg-primary-dim transition-colors inline-block w-fit font-bold"
-          >
-            LET&apos;S_CONNECT [→]
-          </a>
-        </div>
-
-        {/* Mobile-only image - shown below content with blended edges */}
-        <div className="col-span-12 md:hidden relative max-w-xs mx-auto mt-8">
-          <div className="aspect-square overflow-hidden grayscale rounded-full">
-            <Image
-              src="/profile.png"
-              alt="Profile"
-              width={400}
-              height={400}
-              className="w-full h-full object-cover scale-110"
-            />
-          </div>
-          <div className="absolute inset-0 rounded-full shadow-[inset_0_0_40px_20px_#0e0e0e] pointer-events-none" />
         </div>
       </div>
     </section>

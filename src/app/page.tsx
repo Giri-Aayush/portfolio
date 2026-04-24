@@ -1,14 +1,12 @@
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { Stats } from "@/components/stats";
-import { Chronicle } from "@/components/chronicle";
-import { Awards } from "@/components/awards";
-import { Transmission } from "@/components/transmission";
-import { Logs } from "@/components/logs";
-import { Terminal } from "@/components/terminal";
-import { Credentials } from "@/components/credentials";
-import { FloatingDock } from "@/components/floating-dock";
-import { Footer } from "@/components/footer";
+import { Experience } from "@/components/experience";
+import { Projects } from "@/components/projects";
+import { Writing } from "@/components/writing";
+import { Videos } from "@/components/videos";
+import { Contact } from "@/components/contact";
+import { Motion } from "@/components/motion";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -48,18 +46,16 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar />
-      <main className="pt-24 pb-12">
+      <main>
         <Hero />
-        <Stats />
-        <Chronicle />
-        <Awards />
-        <Credentials />
-        <Transmission />
-        <Logs />
-        <Terminal />
+        <Experience />
+        <Projects />
+        <Writing />
+        <Videos />
+        <Contact />
       </main>
-      <FloatingDock />
-      <Footer />
+      <ThemeToggle />
+      <Motion />
     </>
   );
 }

@@ -1,101 +1,119 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
-import { FloatingDock } from "@/components/floating-dock";
-import { Footer } from "@/components/footer";
+import { Motion } from "@/components/motion";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Contact } from "@/components/contact";
 import { blogs } from "@/data/blogs";
 
 export const metadata: Metadata = {
-  title: "Blogs // Aayush Giri",
+  title: "Writing // Aayush Giri",
   description:
-    "Thought leadership on the decentralization stack: zero-knowledge proofs, rollups, account abstraction, and Ethereum infrastructure.",
+    "Long-form writing on zero-knowledge cryptography, rollup architecture, account abstraction, and the infrastructure that keeps the open web open.",
   alternates: {
     canonical: "https://aayushgiri.dev/blogs",
   },
 };
 
 export default function BlogsPage() {
+  const posts = blogs;
+
   return (
     <>
       <Navbar />
-      <main className="pt-24 pb-12">
-        <section id="blogs-header" className="px-8 mb-20">
-          <div className="editorial-grid">
-            <div className="col-span-12 md:col-span-7">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-3 h-3 bg-secondary shadow-[0_0_10px_#d2f000]" />
-                <span className="font-label text-xs text-on-surface-variant tracking-[0.2em]">
-                  LOGS // ARCHIVE
-                </span>
-              </div>
-
-              <h1 className="font-headline text-5xl md:text-8xl font-bold tracking-tighter leading-none mb-8 uppercase">
-                BLOGS <span className="text-primary italic">&amp; ESSAYS</span>
-              </h1>
-
-              <p className="font-body text-lg text-on-surface-variant max-w-xl mb-4 leading-relaxed">
-                Long-form writing on zero-knowledge cryptography, rollup
-                architecture, account abstraction, and the infrastructure that
-                keeps the open web open.
-              </p>
-            </div>
-
-            <div className="hidden md:flex col-span-5 flex-col items-end justify-end">
-              <span className="font-label text-xs text-on-surface-variant tracking-[0.2em] mb-2">
-                COUNT
-              </span>
-              <span className="font-headline text-8xl font-bold tracking-tighter leading-none text-primary">
-                {String(blogs.length).padStart(2, "0")}
-              </span>
-            </div>
+      <main className="pt-32 pb-16">
+        <section className="wrap mb-16">
+          <div className="seclabel mb-6 reveal">Writing · archive</div>
+          <h1
+            className="display reveal d-1"
+            style={{ fontSize: "clamp(48px, 7vw, 96px)" }}
+          >
+            Notes from
+            <br />
+            the <span className="cyan-hl">workbench.</span>
+          </h1>
+          <p
+            className="reveal d-2 mt-8 max-w-2xl leading-relaxed"
+            style={{ color: "var(--fg-2)", fontSize: 18 }}
+          >
+            Long-form writing on zero-knowledge cryptography, rollup
+            architecture, account abstraction, and the infrastructure that
+            keeps the open web open.
+          </p>
+          <div
+            className="mono mt-6"
+            style={{ color: "var(--fg-3)" }}
+          >
+            {String(posts.length).padStart(2, "0")} essays · newest first
           </div>
         </section>
 
-        <section id="blogs-list" className="px-8 mb-28">
-          <div className="editorial-grid">
-            <div className="col-span-12 md:col-span-4">
-              <h2 className="font-headline text-6xl font-bold tracking-tighter uppercase mb-4 sticky top-28">
-                INDEX
-              </h2>
-              <p className="font-label text-xs text-on-surface-variant uppercase tracking-widest">
-                All posts, newest first.
-              </p>
-            </div>
-
-            <div className="col-span-12 md:col-span-8 space-y-16">
-              {blogs.map((article) => (
-                <Link
-                  key={article.slug}
-                  href={`/blogs/${article.slug}`}
-                  className="block group border-b border-outline-variant/20 pb-12 last:border-b-0"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="font-label text-xs text-secondary">
-                      {article.date}
-                    </span>
-                    <span className="font-label text-[10px] text-on-surface-variant border border-outline-variant/30 px-2 py-0.5 uppercase">
-                      {article.readTime}
-                    </span>
+        <section className="wrap pb-10">
+          <div className="flex flex-col gap-3.5">
+            {posts.map((article, i) => (
+              <Link
+                key={article.slug}
+                href={`/blogs/${article.slug}`}
+                className={`card reveal d-${Math.min(i, 3)} group block`}
+                style={{ padding: i === 0 ? "32px" : "24px" }}
+              >
+                <div className="flex items-start justify-between gap-6 flex-wrap">
+                  <div className="flex-1 min-w-0" style={{ maxWidth: "680px" }}>
+                    <div className="flex items-center gap-3 mb-3 flex-wrap">
+                      <span
+                        className="mono"
+                        style={{
+                          color: "var(--cyan)",
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        {article.date}
+                      </span>
+                      <span className="pill">{article.readTime}</span>
+                      {article.status === "coming_soon" && (
+                        <span className="pill" style={{ color: "var(--fg-4)" }}>
+                          Coming soon
+                        </span>
+                      )}
+                    </div>
+                    <h2
+                      className="transition-colors group-hover:text-[var(--cyan)]"
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: i === 0 ? 36 : 26,
+                        fontWeight: 600,
+                        letterSpacing: "-0.025em",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {article.title}
+                    </h2>
+                    <p
+                      className="mt-3 leading-relaxed"
+                      style={{
+                        color: "var(--fg-3)",
+                        fontSize: 15,
+                      }}
+                    >
+                      {article.description}
+                    </p>
                   </div>
-                  <h3 className="font-headline text-4xl font-bold tracking-tight group-hover:text-primary transition-colors mb-4">
-                    {article.title}
-                  </h3>
-                  <p className="font-body text-on-surface-variant leading-relaxed mb-6">
-                    {article.description}
-                  </p>
-                  <span className="font-label text-[10px] text-outline-variant tracking-[0.3em] uppercase group-hover:text-primary transition-colors">
-                    {article.status === "published"
-                      ? "READ [→]"
-                      : "COMING_SOON"}
-                  </span>
-                </Link>
-              ))}
-            </div>
+                  <div
+                    className="mono hidden md:flex items-center gap-2 transition-colors group-hover:text-[var(--cyan)]"
+                    style={{ color: "var(--fg-4)" }}
+                  >
+                    {article.status === "published" ? "Read" : "Soon"} →
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
+
+        <Contact />
       </main>
-      <FloatingDock />
-      <Footer />
+      <ThemeToggle />
+      <Motion />
     </>
   );
 }

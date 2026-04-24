@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const spaceGrotesk = Space_Grotesk({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-headline",
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -17,7 +17,7 @@ const inter = Inter({
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-label",
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -100,14 +100,12 @@ export default function RootLayout({
       lang="en"
       className={cn(
         "dark",
-        spaceGrotesk.variable,
+        interTight.variable,
         inter.variable,
         jetbrainsMono.variable
       )}
     >
-      <body className="bg-surface text-on-surface antialiased">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
