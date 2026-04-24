@@ -524,7 +524,7 @@ const blogsRaw: Blog[] = [
   },
   {
     slug: "wtf-is-op-cat",
-    date: "14.02.26",
+    date: "22.10.25",
     readTime: "11 MIN READ",
     title: "WTF is OP_CAT? Why Should We Care?",
     description:
@@ -763,14 +763,14 @@ const blogsRaw: Blog[] = [
       },
       {
         type: "paragraph",
-        text: "That is the reason the list of teams lobbying for activation is long. Citrea gets a cheaper bridge. Starknet gets a path to settling STARK proofs on Bitcoin. BitVM2 gets to drop its trusted setup and shrink its transactions. Taproot Wizards' CatVM gets permissionless exits. Vault designers get a construction they have been writing papers about for eight years. None of this requires a new opcode. It requires one opcode Satoshi turned off for reasons he did not write down.",
+        text: "That is the reason the list of teams lobbying for activation is long. Citrea gets a cheaper bridge. Starknet gets a path to settling STARK proofs on Bitcoin. BitVM2 gets to drop its trusted setup and shrink its transactions. Taproot Wizards' CatVM gets permissionless exits. Vault designers get a construction they have been writing papers about for nearly a decade. None of this requires a new opcode. It requires one opcode Satoshi turned off for reasons he did not write down.",
       },
       {
         type: "paragraph",
         text: [
           "The spec is merged. The tests pass. The implementation exists. Bitcoin has not coordinated on an activation path, and it is not obvious when or how it will. ",
-          { text: "Eli Ben-Sasson recently told Cointelegraph", href: "https://cointelegraph.com/news/op-cat-may-go-live-bitcoin-within-12-months-starkware-eli-ben-sasson" },
-          " that activation within twelve months is plausible. The next year is the one that decides.",
+          { text: "Eli Ben-Sasson told Cointelegraph in 2024", href: "https://cointelegraph.com/news/op-cat-may-go-live-bitcoin-within-12-months-starkware-eli-ben-sasson" },
+          " that activation within twelve months was plausible. That window has closed. The window after it is open.",
         ],
       },
       {
