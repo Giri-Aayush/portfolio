@@ -70,7 +70,7 @@ export function Videos() {
               className={`card card-lg reveal d-${Math.min(i, 3)} group p-3.5 flex flex-col cursor-pointer`}
             >
               <div
-                className={`thumb ${v.gradient} flex-1 mb-3 relative overflow-hidden`}
+                className={`thumb ${v.gradient} mb-3 relative overflow-hidden aspect-video`}
                 style={{ borderRadius: "var(--r-md)" }}
               >
                 <Image

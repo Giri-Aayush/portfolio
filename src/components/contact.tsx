@@ -9,7 +9,7 @@ export function Contact() {
           className="display reveal d-1 mb-12 relative"
           style={{
             fontSize: "clamp(56px, 10vw, 140px)",
-            lineHeight: 0.92,
+            lineHeight: 1.02,
           }}
         >
           Let&apos;s
