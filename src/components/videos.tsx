@@ -9,7 +9,6 @@ const videos = [
     thumbnail: "https://i.ytimg.com/vi/hm0hBShN9WE/hqdefault.jpg",
     href: "https://www.youtube.com/watch?v=hm0hBShN9WE",
     gradient: "gradient-1",
-    tall: true,
   },
   {
     category: "Workshop · Nethermind",
@@ -61,17 +60,14 @@ export function Videos() {
             </a>
           </div>
         </div>
-        <div
-          className="grid gap-4 md:grid-cols-4"
-          style={{ gridAutoRows: "200px" }}
-        >
+        <div className="grid gap-4 md:grid-cols-4">
           {videos.map((v, i) => (
             <Link
               key={v.href}
               href={v.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`card card-lg reveal d-${Math.min(i, 3)} group p-3.5 flex flex-col cursor-pointer ${v.tall ? "md:row-span-2" : ""}`}
+              className={`card card-lg reveal d-${Math.min(i, 3)} group p-3.5 flex flex-col cursor-pointer`}
             >
               <div
                 className={`thumb ${v.gradient} flex-1 mb-3 relative overflow-hidden`}

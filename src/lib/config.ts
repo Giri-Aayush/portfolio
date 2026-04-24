@@ -127,6 +127,18 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
+      tag: "OSS",
+    },
+    {
+      icon: "⊞",
+      name: "oort-storage-sdk",
+      repo: "oort-storage-sdk",
+      description:
+        "TypeScript client for OORT's S3-compatible object storage. Buckets, multipart uploads, signed URLs.",
+      language: "TypeScript",
+      langColor: "#3178c6",
+      stars: 2,
+      tag: "OSS",
     },
     {
       icon: "⎔",
@@ -187,16 +199,6 @@ export const config = {
       language: "TypeScript",
       langColor: "#3178c6",
       stars: 0,
-    },
-    {
-      icon: "⊞",
-      name: "oort-storage-sdk",
-      repo: "oort-storage-sdk",
-      description:
-        "TypeScript client for OORT's S3-compatible object storage. Buckets, multipart uploads, signed URLs.",
-      language: "TypeScript",
-      langColor: "#3178c6",
-      stars: 2,
     },
     {
       icon: "◉",
