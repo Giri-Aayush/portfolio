@@ -15,10 +15,20 @@ export function Experience() {
             </h2>
           </div>
           <div
-            className="right hidden md:block"
+            className="right hidden md:flex items-center gap-4"
             style={{ color: "var(--fg-3)" }}
           >
-            {String(config.experience.length).padStart(2, "0")} roles · 2022 – present
+            <span>
+              {String(config.experience.length).padStart(2, "0")} roles · 2022 – present
+            </span>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[var(--cyan)] transition-colors"
+            >
+              Resume ↗
+            </a>
           </div>
         </div>
         <div className="flex flex-col gap-2.5">

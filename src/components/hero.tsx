@@ -152,6 +152,15 @@ export function Hero() {
               >
                 <Icon.mail />
               </a>
+              <a
+                className="social-btn"
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Resume"
+              >
+                <Icon.resume />
+              </a>
             </div>
             <div className="flex gap-2.5 mt-1 flex-wrap">
               <a

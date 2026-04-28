@@ -73,6 +73,14 @@ export function Contact() {
               >
                 LinkedIn ↗
               </a>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--cyan)] transition-colors"
+              >
+                Resume ↗
+              </a>
             </div>
             <div className="mono">v4.0 · hand-built</div>
           </div>
