@@ -1,12 +1,14 @@
 /**
  * sync-stats.ts
  *
- * Run once to seed all-time stats, then on each subsequent run
- * it only fetches the delta since the last run and increments.
+ * Recomputes all-time GitHub stats (commits, PRs, repos, stars) and writes them
+ * to src/data/stats.json, which the hero section reads. Every run is a full
+ * recompute, so the output is idempotent — running it twice gives the same
+ * numbers. Requires a GITHUB_TOKEN env var (a user PAT, so private/restricted
+ * contributions are included in the commit count).
  *
  * Usage:
- *   npx tsx scripts/sync-stats.ts          # incremental update
- *   npx tsx scripts/sync-stats.ts --full   # force full re-fetch
+ *   GITHUB_TOKEN=… npx tsx scripts/sync-stats.ts
  */
 
 import fs from "fs";
@@ -22,7 +24,6 @@ interface Stats {
   totalPRs: number;
   totalRepos: number;
   totalStars: number;
-  lastFetched: string | null;
 }
 
 async function graphql(query: string) {
@@ -38,103 +39,135 @@ async function graphql(query: string) {
     body: JSON.stringify({ query }),
   });
 
+  // Non-2xx responses (401 bad/expired token, 403 rate-limit/SAML, 5xx) come
+  // back without a GraphQL `errors` array, so surface the status + body instead
+  // of letting a downstream `data.user` deref throw an opaque TypeError.
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`GitHub API returned ${res.status}: ${body.slice(0, 300)}`);
+  }
+
   const json = await res.json();
   if (json.errors) throw new Error(JSON.stringify(json.errors));
   return json.data;
 }
 
-/** Fetch commits between two dates, batching year-by-year if needed */
+/**
+ * Fetch commit contributions across a date range, batched per calendar year.
+ *
+ * Counts `totalCommitContributions` only — commits to repos this token can see
+ * (public + accessible private). We deliberately do NOT add
+ * `restrictedContributionsCount`: that bucket lumps together every private
+ * contribution the viewer can't itemize (commits AND PRs, issues, reviews), so
+ * adding it would inflate a number we label "Commits" with non-commit activity.
+ *
+ * `contributionsCollection(from, to)` is capped at one year, so we batch by
+ * calendar year. Result is a pure function of [from, to]: idempotent, no drift.
+ */
 async function fetchCommits(from: Date, to: Date): Promise<number> {
   const yearFragments: string[] = [];
-  let cursor = new Date(from);
+  const firstYear = from.getUTCFullYear();
+  const lastYear = to.getUTCFullYear();
 
-  while (cursor < to) {
-    const f = cursor.toISOString();
-    const nextYear = new Date(cursor);
-    nextYear.setFullYear(nextYear.getFullYear() + 1);
-    const t = nextYear > to ? to.toISOString() : nextYear.toISOString();
+  for (let year = firstYear; year <= lastYear; year++) {
+    const start =
+      year === firstYear ? from : new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
+    const end =
+      year === lastYear
+        ? to
+        : new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
     yearFragments.push(
-      `y${cursor.getFullYear()}: contributionsCollection(from: "${f}", to: "${t}") {
+      `y${year}: contributionsCollection(from: "${start.toISOString()}", to: "${end.toISOString()}") {
         totalCommitContributions
-        restrictedContributionsCount
       }`
     );
-    cursor = nextYear;
   }
+
+  // Inverted range (e.g. clock skew) → no work, rather than an empty GraphQL selection.
+  if (yearFragments.length === 0) return 0;
 
   const data = await graphql(
     `{ user(login: "${GITHUB_USERNAME}") { ${yearFragments.join("\n")} } }`
   );
 
   let total = 0;
-  for (const key of Object.keys(data.user)) {
-    if (key.startsWith("y")) {
-      total +=
-        data.user[key].totalCommitContributions +
-        data.user[key].restrictedContributionsCount;
-    }
+  for (const year of Object.values(data.user) as { totalCommitContributions: number }[]) {
+    total += year.totalCommitContributions;
   }
   return total;
 }
 
 /** Fetch repos, stars, and all-time PR count (these are cheap — always fresh) */
 async function fetchReposAndPRs() {
-  const data = await graphql(`{
-    user(login: "${GITHUB_USERNAME}") {
-      repositories(first: 100, ownerAffiliations: OWNER, orderBy: {field: STARGAZERS, direction: DESC}) {
-        totalCount
-        nodes { stargazerCount }
-      }
-      pullRequests(states: [OPEN, CLOSED, MERGED]) {
-        totalCount
-      }
-    }
-  }`);
+  let totalRepos = 0;
+  let totalPRs = 0;
+  let totalStars = 0;
+  let cursor: string | null = null;
+  let first = true;
 
-  const user = data.user;
-  return {
-    totalRepos: user.repositories.totalCount,
-    totalPRs: user.pullRequests.totalCount,
-    totalStars: user.repositories.nodes.reduce(
-      (sum: number, r: { stargazerCount: number }) => sum + r.stargazerCount,
-      0
-    ),
-  };
+  // Repos are ordered by stars (desc) and paginated, so the star sum stays
+  // correct beyond the 100-repo page limit. Because the order is descending,
+  // once a page ends on a 0-star repo every remaining repo is 0-star too — so
+  // we can stop early instead of walking the long tail of unstarred repos.
+  while (true) {
+    const after: string = cursor ? `, after: "${cursor}"` : "";
+    const data = await graphql(`{
+      user(login: "${GITHUB_USERNAME}") {
+        ${first ? "pullRequests(states: [OPEN, CLOSED, MERGED]) { totalCount }" : ""}
+        repositories(first: 100, ownerAffiliations: OWNER, orderBy: {field: STARGAZERS, direction: DESC}${after}) {
+          totalCount
+          nodes { stargazerCount }
+          pageInfo { hasNextPage endCursor }
+        }
+      }
+    }`);
+
+    const repos = data.user.repositories;
+    if (first) {
+      totalRepos = repos.totalCount;
+      totalPRs = data.user.pullRequests.totalCount;
+      first = false;
+    }
+
+    const nodes: { stargazerCount: number }[] = repos.nodes;
+    for (const r of nodes) totalStars += r.stargazerCount;
+
+    const lastNode = nodes[nodes.length - 1];
+    const nextCursor: string | null = repos.pageInfo.endCursor;
+    // Stop at the end of the list, once the tail is all-zero stars (DESC order),
+    // or if the cursor fails to advance — the last guards against an endless
+    // loop on a malformed page (hasNextPage true but a null/repeated cursor).
+    if (
+      !repos.pageInfo.hasNextPage ||
+      (lastNode && lastNode.stargazerCount === 0) ||
+      !nextCursor ||
+      nextCursor === cursor
+    ) {
+      break;
+    }
+    cursor = nextCursor;
+  }
+
+  return { totalRepos, totalPRs, totalStars };
 }
 
 async function main() {
-  const forceFullFetch = process.argv.includes("--full");
-  const current: Stats = JSON.parse(fs.readFileSync(STATS_FILE, "utf-8"));
   const now = new Date();
 
-  const isFirstRun = !current.lastFetched || forceFullFetch;
+  console.log("→ Fetching all-time stats from GitHub...");
 
-  console.log(
-    isFirstRun
-      ? "→ First run / full fetch: fetching all-time stats..."
-      : `→ Incremental: fetching delta since ${current.lastFetched}...`
-  );
-
-  // Repos, PRs, stars — always fetched fresh (single cheap query, these are running totals)
+  // Repos, PRs, stars — single (paginated) query.
   const { totalRepos, totalPRs, totalStars } = await fetchReposAndPRs();
 
-  // Commits — expensive, so incremental
-  let totalCommits: number;
-  if (isFirstRun) {
-    totalCommits = await fetchCommits(new Date(ACCOUNT_CREATED), now);
-  } else {
-    const newCommits = await fetchCommits(new Date(current.lastFetched!), now);
-    totalCommits = current.totalCommits + newCommits;
-  }
+  // Commits — recomputed in full every run. It's one GraphQL request (all years
+  // batched together), so it's cheap, and recomputing from scratch keeps the
+  // number idempotent: no incremental boundary drift across repeated runs.
+  const totalCommits = await fetchCommits(new Date(ACCOUNT_CREATED), now);
 
-  const updated: Stats = {
-    totalCommits,
-    totalPRs,
-    totalRepos,
-    totalStars,
-    lastFetched: now.toISOString(),
-  };
+  const updated: Stats = { totalCommits, totalPRs, totalRepos, totalStars };
 
+  // Only the four numbers are written (no timestamp), so the file changes only
+  // when a real stat changes — the CI commit step keys off that diff directly.
   fs.writeFileSync(STATS_FILE, JSON.stringify(updated, null, 2) + "\n");
 
   console.log("✓ Stats updated:");
@@ -142,7 +175,6 @@ async function main() {
   console.log(`  PRs:      ${updated.totalPRs}`);
   console.log(`  Repos:    ${updated.totalRepos}`);
   console.log(`  Stars:    ${updated.totalStars}`);
-  console.log(`  Snapshot: ${updated.lastFetched}`);
 }
 
 main().catch((err) => {

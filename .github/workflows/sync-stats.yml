@@ -1,0 +1,64 @@
+name: Sync GitHub stats
+
+# Refreshes src/data/stats.json (commits / PRs / repos / stars shown in the hero)
+# from the GitHub API once a day, committing only when a number actually changed.
+# The push triggers a Netlify rebuild, so the live site updates automatically.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily, 06:00 UTC
+  workflow_dispatch: {} # plus a manual "Run workflow" button
+
+# Don't let two syncs overlap.
+concurrency:
+  group: sync-stats
+  cancel-in-progress: false
+
+# The commit/push uses the default repo-scoped GITHUB_TOKEN, which this grants.
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # No custom token: checkout persists the repo-scoped GITHUB_TOKEN for the
+        # push, so the broad user PAT is never written to disk during `npm ci`.
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch latest stats
+        env:
+          # The user PAT is used ONLY here, for the GitHub API (never for git),
+          # so it can read private/restricted contribution counts.
+          GITHUB_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+        run: npx tsx scripts/sync-stats.ts
+
+      - name: Commit & push if changed
+        run: |
+          if git diff --quiet -- src/data/stats.json; then
+            echo "Stats unchanged — nothing to commit."
+            echo "## Stats sync: no change" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          commits=$(node -p "require('./src/data/stats.json').totalCommits")
+          prs=$(node -p "require('./src/data/stats.json').totalPRs")
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/stats.json
+          git commit -m "chore: sync GitHub stats — ${commits} commits, ${prs} PRs"
+          git pull --rebase origin main   # land cleanly if main moved during the run
+          git push origin HEAD:main
+
+          echo "## Stats synced: ${commits} commits, ${prs} PRs" >> "$GITHUB_STEP_SUMMARY"

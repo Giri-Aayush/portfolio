@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync-stats": "tsx scripts/sync-stats.ts",
-    "sync-stats:full": "tsx scripts/sync-stats.ts --full"
+    "sync-stats": "tsx scripts/sync-stats.ts"
   },
   "keywords": [],
   "author": "",
