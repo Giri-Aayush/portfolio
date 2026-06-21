@@ -112,6 +112,20 @@ export const config = {
   // Ordered by creation date, latest first
   ossProjects: [
     {
+      icon: "⊠",
+      name: "Confidential Auction",
+      repo: "solidity-to-daml-confidential-auction",
+      description:
+        "The same sealed-bid auction, built twice. Solidity commit/reveal on the EVM versus privacy by construction in Daml on Canton, settled through the CIP-0056 token standard.",
+      language: "Solidity",
+      langColor: "#AA6746",
+      stars: 0,
+      tag: "OSS",
+      mockType: "code" as const,
+      mockHeader: "Auction.sol",
+      mock: "// commit: hash bid + salt\nbytes32 c = keccak256(\n  abi.encode(bid, salt)\n);\nauction.commit(c);\n// reveal to settle",
+    },
+    {
       icon: "⛊",
       name: "zkp-authentication",
       repo: "zkp-authentication",
