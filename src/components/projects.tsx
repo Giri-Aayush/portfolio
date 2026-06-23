@@ -12,7 +12,7 @@ const gradients = [
 ];
 
 export function Projects() {
-  const featured = config.ossProjects.slice(0, 8);
+  const featured = config.ossProjects.slice(0, 11);
 
   return (
     <section id="projects" className="py-20">
@@ -30,7 +30,7 @@ export function Projects() {
             className="right hidden md:block"
             style={{ color: "var(--fg-3)" }}
           >
-            08 shown ·{" "}
+            {String(featured.length).padStart(2, "0")} shown ·{" "}
             <a
               href={`https://github.com/${config.github}`}
               target="_blank"
