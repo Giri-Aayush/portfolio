@@ -41,6 +41,284 @@ const LOREM_PARAGRAPH_D =
 
 const blogsRaw: Blog[] = [
   {
+    slug: "sealed-bid-auction-solidity-to-daml",
+    date: "23.06.26",
+    readTime: "13 MIN READ",
+    title: "Your Sealed-Bid Auction Is Not Sealed.",
+    description:
+      "A sealed-bid auction on the EVM is not actually sealed: you fake it with commit/reveal, a deposit, and a forfeiture rule. I built the same auction in Solidity (239 lines) and in Daml on Canton (561 lines) to show what code disappears when the ledger keeps the secret itself, and where the cost moves instead.",
+    status: "published",
+    content: [
+      {
+        type: "paragraph",
+        text: "A sealed-bid auction on Ethereum is not sealed. Every storage slot and every byte of calldata is world-readable the moment it is mined, so a bid written to the chain is a bid everyone can read. The usual fix is commit/reveal: each bidder publishes keccak256(value, secret) during one window, reveals the preimage during a second, and posts a deposit that is forfeited if they never show up. It works. But the secrecy is a stall, not a guarantee, and once the reveal window opens every bid is public forever.",
+      },
+      {
+        type: "paragraph",
+        text: [
+          "My job is developer relations, which mostly means helping people who are fluent in one stack get productive in another. The recurring lesson is that the wall is almost never syntax. It is the model underneath. So I took the smallest contract that forces the model to change, a sealed-bid auction, and built it twice: once in Solidity for the EVM, once in Daml on Canton. Both live in ",
+          { text: "one repo", href: "https://github.com/Giri-Aayush/solidity-to-daml-confidential-auction" },
+          ", and there is a ",
+          { text: "live demo", href: "https://canton-confidential.netlify.app/" },
+          " where you can place a bid and watch which parties can and cannot read it. This post is the walkthrough.",
+        ],
+      },
+      {
+        type: "image",
+        src: "/blogs/sealed-bid-auction-solidity-to-daml/hero.png",
+        alt: "The Confidential Auction demo: a sealed bid where the auctioneer and the bidder can read the amount but other bidders see a redaction bar.",
+        caption: "The live demo. The auctioneer and Bob can both read Bob's 50 CC bid; Alice gets a redaction bar. Click to try it.",
+        href: "https://canton-confidential.netlify.app/",
+      },
+      {
+        type: "paragraph",
+        text: "The two versions are a useful size to compare: a 239-line Solidity contract with 17 Foundry tests, and a 561-line Daml contract with 9 Daml scripts. Two terms before we start, if Canton is new to you. Canton is a privacy-first network: instead of one global public ledger, each party holds only the contracts it is a stakeholder of, so there is no shared world-state to leak. Daml is the language you write for it, in place of Solidity.",
+      },
+      {
+        type: "heading",
+        text: "The same auction, both ways",
+      },
+      {
+        type: "code",
+        language: "what each version spends its effort on",
+        text: `                     SOLIDITY (EVM)          DAML (CANTON)
+secret kept by       commit/reveal hashes    the ledger itself
+secrecy lasts        until reveal, then      forever; losers never
+                     public forever          see the winning bid
+binding via          a forfeitable deposit   funds locked at bid time
+settle takes         reveal, withdraw,       one atomic
+                     auctionEnd (3+ txs)     delivery-versus-payment
+readable by          everyone, post-reveal   auctioneer + that bidder`,
+      },
+      {
+        type: "paragraph",
+        text: "The commit/reveal scaffolding (the hash, the reveal window, the forfeiture rule) has no counterpart in the Daml version. The thing it simulates, a bid only some parties can see, is a primitive of the platform. The Daml contract is 2.3 times longer, and where the extra lines go is the lesson. Daml has no native currency, so it spends them on a token and one atomic delivery-versus-payment, not on faking privacy and chasing refunds across transactions.",
+      },
+      {
+        type: "heading",
+        text: "What the EVM makes you fake",
+      },
+      {
+        type: "paragraph",
+        text: "You already know how to write the Solidity side, so start there. You cannot store the bid as a number, so you store its hash and send the deposit in the same call.",
+      },
+      {
+        type: "code",
+        language: "solidity",
+        text: `// the ether you send is the binding deposit; the bid itself is a hash
+function commit(bytes32 blindedBid) external payable onlyBefore(biddingEnd) {
+    if (blindedBid == bytes32(0)) revert EmptyCommitment();
+    if (bids[msg.sender].blindedBid != bytes32(0)) revert AlreadyCommitted();
+    // store the hash + msg.value; the preimage is revealed in the next window
+}`,
+      },
+      {
+        type: "paragraph",
+        text: "After the bidding window closes, every bidder calls reveal with the value and the secret, the contract recomputes the hash, checks it against the stored commitment, and only now is the bid a number in public storage. A bidder who never reveals forfeits the deposit, which is the only thing stopping someone from committing a lowball hash and walking away. Settlement is three more moves across separate transactions:",
+      },
+      {
+        type: "code",
+        language: "solidity",
+        text: `// four entry points, two time windows, settlement across separate transactions
+function commit(bytes32 blindedBid) external payable onlyBefore(biddingEnd);
+function reveal(uint256 value, bytes32 secret) external onlyAfter(biddingEnd) onlyBefore(revealEnd);
+function withdraw() external;                        // each loser pulls their own refund
+function auctionEnd() external onlyAfter(revealEnd); // pay the beneficiary, set ended`,
+      },
+      {
+        type: "paragraph",
+        text: "Two time windows, a deposit, a forfeiture rule, a hash, and a pull-payment finalizer. Every one of those exists to approximate a property the EVM does not have: a bid that some parties can see and others cannot. None of it survives the port.",
+      },
+      {
+        type: "heading",
+        text: "The one model shift to internalize",
+      },
+      {
+        type: "paragraph",
+        text: "This is the part to internalize; the rest is mechanical. In Solidity a contract is an object at an address, its storage is one shared database the whole world can read, and msg.sender tells you who called. To hide anything you encrypt or hash it yourself. In Daml a contract is an immutable record on a distributed ledger, and every contract names its signatories (whose authority it carries and who is bound by it) and its observers (who may also see it). A party's ledger is exactly the set of contracts where they are a signatory or observer, and nothing else. There is no global readable state, so there is nothing to leak.",
+      },
+      {
+        type: "paragraph",
+        text: "So the question you ask changes. In Solidity: who is allowed to call this function, and you guard it with require. In Daml: who needs to see this, and whose authority does it carry, and you answer with signatory, observer, and controller.",
+      },
+      {
+        type: "heading",
+        text: "Where the privacy actually comes from",
+      },
+      {
+        type: "paragraph",
+        text: "One screenful carries the whole story. Here is the bid in Daml, trimmed to the fields that matter:",
+      },
+      {
+        type: "code",
+        language: "daml",
+        text: `template Bid
+  with
+    auctioneer : Party
+    bidder : Party
+    item : Text
+    amount : Decimal
+  where
+    signatory auctioneer, bidder   -- and NOBODY else is named here`,
+      },
+      {
+        type: "paragraph",
+        text: "Because only auctioneer and bidder are signatories, and the template names no observers, no other party's node ever holds this contract. A competing bidder cannot fetch it, cannot query it, cannot learn that it exists. That is what the demo shows: four parties, four different views of the same ledger.",
+      },
+      {
+        type: "image",
+        src: "/blogs/sealed-bid-auction-solidity-to-daml/privacy-demo.png",
+        alt: "The demo's ledger view: Alice and Carol each see only their own bid, the auctioneer sees both, and every non-stakeholder view shows a redaction bar.",
+        caption: "Each bidder sees only their own bid; the auctioneer, a signatory on all of them, sees every one. On a real Canton network the redaction bars would not exist, because a sealed bid never reaches a non-stakeholder's node at all.",
+        href: "https://canton-confidential.netlify.app/",
+      },
+      {
+        type: "paragraph",
+        text: "The Daml test makes the same claim against a live ledger, by content rather than by screenshot:",
+      },
+      {
+        type: "code",
+        language: "daml",
+        text: `aliceView <- query @Bid alice
+case aliceView of
+  [(_, bid)] -> bid.bidder === alice   -- Alice sees exactly one bid, and it is hers
+  _ -> abort "Alice should see only her own bid"
+
+auctioneerView <- query @Bid auctioneer
+length auctioneerView === 3            -- a signatory on all, the auctioneer sees every bid`,
+      },
+      {
+        type: "paragraph",
+        text: "Alice sees one bid and it is hers. The auctioneer, a signatory on all of them, sees three. The Solidity contract can only delay disclosure; the Daml one never discloses the losers at all. AuctionResult names the winner as its only observer, so a losing bidder does not even learn the clearing price. That is not extra work. It is the absence of work.",
+      },
+      {
+        type: "heading",
+        text: "Authorization stops being a check you remember to write",
+      },
+      {
+        type: "paragraph",
+        text: "In Solidity, authorization is an imperative guard you have to remember: a modifier, or require(msg.sender == owner). Forget it and the function is open to anyone. In Daml, who may act is part of the type of the choice, enforced by the engine:",
+      },
+      {
+        type: "code",
+        language: "daml",
+        text: `-- simplified: the real choice also takes funds + tally and locks the coin
+choice PlaceBid : ContractId Bid     -- a consuming choice ON the bidder's BidRight
+  with terms : ContractId AuctionTerms; amount : Decimal
+  controller bidder                  -- only the right's holder can place the bid
+  do
+    t <- fetch terms
+    create Bid with auctioneer, bidder, item = t.item, amount  -- signed by [auctioneer, bidder]`,
+      },
+      {
+        type: "paragraph",
+        text: "You cannot exercise PlaceBid as anyone but the named controller, and the Bid it creates cannot exist unless both of its signatories authorized it. The part with no Solidity equivalent: the choice body runs with the authority of the BidRight's signatory, the auctioneer, plus its controller, the bidder. That is exactly the two signatures the Bid needs. So a single bidder transaction creates a contract co-signed by the auctioneer without the auctioneer being online. That delegated authority is what replaces a pile of approval and allowance boilerplate.",
+      },
+      {
+        type: "heading",
+        text: "Settlement collapses to one transaction",
+      },
+      {
+        type: "paragraph",
+        text: "The Solidity finalizer is a sequence: reveal, then each loser pulls a refund with withdraw, then someone calls auctionEnd to pay the beneficiary. The refunds sit in a pendingReturns mapping and are pulled rather than pushed, which is the pattern you adopt to avoid reentrancy when sending ether in a loop. Daml settles in one atomic choice. It has no native ether, so each bid locks its funds at bid time as a Canton Network Token Standard Holding, and the winner pays through the standard's Allocation interface, the atomic delivery-versus-payment primitive:",
+      },
+      {
+        type: "code",
+        language: "daml",
+        text: `-- the tail of Settle, after the roster + registry-tally completeness checks
+case sortOn (\\(_, bid) -> negate bid.amount) bids of
+  [] -> abort "cannot settle an auction with no bids"
+  ((winCid, _) :: losers) -> do
+    exercise winCid AwardToBeneficiary            -- winner's locked funds -> seller
+    forA losers \\(cid, _) -> exercise cid Refund  -- losers refunded, same transaction
+    create AuctionResult with winner = ..         -- observed by the winner only`,
+      },
+      {
+        type: "paragraph",
+        text: "AwardToBeneficiary executes the winner's allocation and forwards the proceeds to the seller; Refund cancels each loser's allocation and returns their locked funds. Both run in this one transaction. Either the winner pays and every loser is refunded, or nothing moves. That atomicity is delivery-versus-payment, and it deletes the escrow-then-withdraw dance along with the reentrancy surface that made the dance necessary.",
+      },
+      {
+        type: "heading",
+        text: "What does not port cleanly",
+      },
+      {
+        type: "paragraph",
+        text: "If I only showed you the deletions, this would be a sales pitch, not a tutorial. So here is where the Daml version spends the lines it saved, and where the trust actually sits.",
+      },
+      {
+        type: "paragraph",
+        text: "Value. Daml has no native currency, so funds are held as the CIP-0056 token standard's Holding interface and moved through its Allocation interface. The sample ships a minimal registry, AuctionCoin, minted by a registry party kept separate from the auctioneer, so no single party can both mint funds and run the auction. On a real network you swap in Amulet, the Canton Coin registry, and the auction itself does not change, because it targets the standard interfaces rather than the registry behind them.",
+      },
+      {
+        type: "paragraph",
+        text: "Winner-correctness, and its price. A list of bids handed to the settle choice proves nothing about completeness: a misbehaving auctioneer could drop the true high bid and crown a lower one. The fix is a registry-signed AuctionTally that counts every bid under the registry's authority, so the auctioneer can neither forge nor reset it, and Settle requires the validated bids to number exactly that count. The supplied set must then be all of the live bids. The worst the auctioneer can now do is stall, not crown the wrong winner. But notice where the trust landed: on a neutral registry, not on the interested auctioneer. A fully trustless count is impossible while bids stay private, because only the auctioneer sees them all, and a bidder-signed counter would expose its own signatories and leak the participant set. That is the same privacy-versus-verifiability dial the EVM turns the other way. Reveal every bid and the winner becomes publicly checkable, at the cost of the confidentiality you wanted in the first place.",
+      },
+      {
+        type: "paragraph",
+        text: "Liveness. The refunds are atomic, but they only fire when the auctioneer settles. If the auctioneer goes dark, a bidder is not stuck: once the settleBy deadline passes, ReclaimAfterDeadline lets the bidder withdraw their own locked funds with no auctioneer involved. The settle and reclaim windows are disjoint (now <= settleBy versus now > settleBy), so a bid is never both settleable and reclaimable.",
+      },
+      {
+        type: "heading",
+        text: "Run it yourself",
+      },
+      {
+        type: "paragraph",
+        text: [
+          "You do not need to install anything to get the idea: the ",
+          { text: "live demo", href: "https://canton-confidential.netlify.app/" },
+          " runs the whole flow in the browser. To run the actual contracts, the repo puts both suites behind one command:",
+        ],
+      },
+      {
+        type: "code",
+        language: "bash",
+        text: `git clone https://github.com/Giri-Aayush/solidity-to-daml-confidential-auction
+cd solidity-to-daml-confidential-auction
+
+make test     # both suites: 17 Foundry tests + 9 Daml scripts
+make canton   # run the auction on a real Canton node (boots a sandbox, runs the proof)
+make web      # the explainer site locally on :3000`,
+      },
+      {
+        type: "paragraph",
+        text: [
+          "The one script to read is privacyAndSettlement. It places three bids from three parties, asserts on a live ledger that each bidder sees exactly their own while the auctioneer sees all three, then settles and checks that the winner's funds reach the seller and the losers are refunded, atomically. That single script is what the whole Solidity commit/reveal-and-withdraw dance is trying to approximate. The full walkthrough, with the concept map and side-by-side code, is in the ",
+          { text: "translation guide", href: "https://github.com/Giri-Aayush/solidity-to-daml-confidential-auction/blob/main/guide/solidity-to-daml.md" },
+          " in the repo.",
+        ],
+      },
+      {
+        type: "heading",
+        text: "How the pieces fit",
+      },
+      {
+        type: "paragraph",
+        text: "The Solidity auction spends most of its code on machinery that exists only because the EVM cannot keep a secret: two time windows, a hash, a deposit, a forfeiture rule, a pull-payment finalizer. Move the same auction to a ledger that is private by default and all of it deletes. Privacy stops being a protocol you implement and becomes one line, the signatory list on the Bid.",
+      },
+      {
+        type: "paragraph",
+        text: "The cost did not vanish, though. It moved. Daml made me name a token and an atomic delivery-versus-payment that the EVM either gave me for free or let me ignore, and it put the auction's honesty on a registry-signed counter rather than on a public reveal. That is the trade Canton offers an EVM developer: stop writing cryptographic scaffolding to fake confidentiality, and start naming the trust assumptions you were relying on all along. For a sealed-bid auction, where confidentiality is the entire point, I think that is the right trade.",
+      },
+      {
+        type: "heading",
+        text: "References",
+      },
+      {
+        type: "references",
+        items: [
+          { label: "The repo: solidity-to-daml-confidential-auction", url: "https://github.com/Giri-Aayush/solidity-to-daml-confidential-auction" },
+          { label: "The translation guide: concept map, mental-model shift, side-by-side code", url: "https://github.com/Giri-Aayush/solidity-to-daml-confidential-auction/blob/main/guide/solidity-to-daml.md" },
+          { label: "Live demo: place a sealed bid and watch the privacy hold", url: "https://canton-confidential.netlify.app/" },
+          { label: "CIP-0056: the Canton Network Token Standard", url: "https://github.com/canton-foundation/cips/blob/main/cip-0056/cip-0056.md" },
+          { label: "Canton Network Token Standard docs (Holding / Allocation)", url: "https://docs.digitalasset.com/integrate/devnet/token-standard.html" },
+          { label: "Daml 3.4 documentation", url: "https://docs.digitalasset.com/build/3.4/" },
+          { label: "Splice: the Amulet (Canton Coin) registry", url: "https://github.com/hyperledger-labs/splice" },
+          { label: "Ledger privacy and divulgence (Daml ledger model)", url: "https://docs.digitalasset.com/overview/3.4/explanations/ledger-model/ledger-privacy.html" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "karpathy-killed-my-rag-pipeline",
     date: "15.04.26",
     readTime: "8 MIN READ",
