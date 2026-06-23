@@ -19,6 +19,8 @@ const marqueeItems = [
   "Cairo",
   "Aztec",
   "Noir",
+  "Canton",
+  "Daml",
   "MCP",
   "AI Agents",
   "SDK Design",
